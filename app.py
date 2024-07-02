@@ -315,3 +315,4 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
     # e fazer uma comparação pra ver qual esta mais próximo do resultado. https://awari.com.br/ocr-em-python-aprenda-a-extrair-texto-de-imagens-com-facilidade/
     #ideia de comparação: extrair qual a classe da via e gerar um script que gera automaticamente uma planilha com os parametros para comparação
     #no dialux criar guias como foram feitos no projeto de cachoeiro, fazer comparação tipo aquela
+    #na funcao de salvar as imagens, precisa concatenar um numero para que as imagens nao fiquem com o mesmo nome e acabem dando problma
