@@ -24,8 +24,7 @@ comprimento_braco = df['comprimento_braco'].tolist()
 #pyautogui.doubleClick(147, 423, duration=0.5)
 #sleep(30)  # TEMPO ATÉ ABRIR E CARREGAR O DIALUX
 
-# Abrindo guia planejamento
-pyautogui.click(399, 82, duration=0.5)
+
 
 def tab_interate(cont):
     i = 0
@@ -54,6 +53,15 @@ def scroll_to_position(target_y, steps=200):
 for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altura_lum_x, angulo_x, poste_pista_x, comprimento_braco_x in zip(larg_passeio_opost, largura_via, larg_passeio_adj, entre_postes, altura_lum, angulo, poste_pista, comprimento_braco):
     cont_geral = cont_geral +1 #var para fazer a contagem de cenários 
     cont__str = str(cont_geral); #var para fazer conversão de int para string e passar como parametro no nome do cenário
+    
+    # Abrindo guia planejamento
+    pyautogui.click(399, 82, duration=0.5)
+    sleep(1.5)
+
+    ruas = pyautogui.locateCenterOnScreen('ruas.png', confidence=0.6)
+    pyautogui.click(ruas.x, ruas.y)
+    sleep(0.3)
+
     # Selecionando o passeio1
     pyautogui.doubleClick(102, 586, duration=0.5)
     sleep(0.6)
@@ -102,7 +110,6 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
     #scroll_to_position(target, 300)
     #sleep(1.5)
 
-    
     #Distância entre postes entre_postes
     #postes = pyautogui.locateCenterOnScreen('entre_postes.png', confidence=0.6)
     #pyautogui.click(postes.x, postes.y)
@@ -137,15 +144,75 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
     pyautogui.press('delete')
     pyautogui.write(str(comprimento_braco_x))
 
+    #modificando nome do projeto
     sleep(1)
     projecto = pyautogui.locateCenterOnScreen('guia_projecto.png', confidence=0.6)
     pyautogui.click(projecto.x, projecto.y)
-    sleep(0.3)
+    sleep(0.4)
     nome_projet = pyautogui.locateCenterOnScreen('nome_projeto.png', confidence=0.6)
     pyautogui.click(nome_projet.x, nome_projet.y)
+    pyautogui.hotkey('ctrl', 'a')
+    pyautogui.press('delete')
     pyautogui.write(str("Itajai " + cont__str))
+    sleep(0.4)
+
+    #Gerando relat - guia_documentacao
+    guia_doc = pyautogui.locateCenterOnScreen('guia_documentacao.png', confidence=0.6)
+    pyautogui.click(guia_doc.x, guia_doc.y)
+    sleep(1.5)
+    exibir = pyautogui.locateCenterOnScreen('exibir_doc.png', confidence=0.6)
+    pyautogui.click(exibir.x, exibir.y)
+    sleep(10)
+
+    #salvando pdf relatório
+    guardarpdf = pyautogui.locateCenterOnScreen('guardar_como.png', confidence=0.6)
+    pyautogui.click(guardarpdf.x, guardarpdf.y)
+    sleep(0.1)
+    pdf_save = pyautogui.locateCenterOnScreen('pdf.png', confidence=0.6)
+    pyautogui.click(pdf_save.x, pdf_save.y)
+    sleep(0.5)
+    ok_pdf = pyautogui.locateCenterOnScreen('ok_pdf.png', confidence=0.6)
+    pyautogui.click(ok_pdf.x, ok_pdf.y)
+    sleep(0.3)
+    documentos = pyautogui.locateCenterOnScreen('documentos_w11.png', confidence=0.6)
+    pyautogui.click(documentos.x, documentos.y)
+    sleep(0.5)
+    teste = pyautogui.locateCenterOnScreen('teste_pasta.png', confidence=0.6)
+    pyautogui.doubleClick(teste.x, teste.y)
+    sleep(0.5)
+    salvar_pasta = pyautogui.locateCenterOnScreen('salvar_pasta.png', confidence=0.6)
+    pyautogui.click(salvar_pasta.x, salvar_pasta.y)
+    sleep(4)
+
+    #salvando arquivo editável
+    ficheiro = pyautogui.locateCenterOnScreen('ficheiro.png', confidence=0.5)
+    pyautogui.click(ficheiro.x, ficheiro.y)
+    sleep(0.5)
+    guardar_project = pyautogui.locateCenterOnScreen('guardar_project.png', confidence=0.8)
+    pyautogui.click(guardar_project.x, guardar_project.y)
+    sleep(0.5)
+    documentos = pyautogui.locateCenterOnScreen('documentos_w11.png', confidence=0.6)
+    pyautogui.click(documentos.x, documentos.y)
+    sleep(0.3)
+    teste = pyautogui.locateCenterOnScreen('teste_pasta.png', confidence=0.6)
+    pyautogui.doubleClick(teste.x, teste.y)
+    sleep(0.3)
+    nome_editavel = pyautogui.locateCenterOnScreen('nome_editavel.png', confidence=0.2)
+    pyautogui.doubleClick(nome_editavel.x, nome_editavel.y)
+    sleep(0.3)
+    pyautogui.hotkey('ctrl', 'a')
+    pyautogui.press('delete')
+    pyautogui.write(str("Itajai " + cont__str + ".evo")) #nome arquivo
+    salvar_pasta = pyautogui.locateCenterOnScreen('salvar_pasta.png', confidence=0.6)
+    pyautogui.click(salvar_pasta.x, salvar_pasta.y)
+    sleep(8)
+
+
+
+    
     
 
     #fazer a comparação de qual luminaria é a mais eficiente, para isso vamos tirar print dos resultados, extrair o texto das imagens 
     # e fazer uma comparação pra ver qual esta mais próximo do resultado. https://awari.com.br/ocr-em-python-aprenda-a-extrair-texto-de-imagens-com-facilidade/
     #ideia de comparação: extrair qual a classe da via e gerar um script que gera automaticamente uma planilha com os parametros para comparação
+    #no dialux criar guias como foram feitos no projeto de cachoeiro, fazer comparação tipo aquela
