@@ -31,19 +31,42 @@ comprimento_braco = df['comprimento_braco'].tolist()
 #sleep(30)  # TEMPO ATÉ ABRIR E CARREGAR O DIALUX
 
 # Função para verificar se os valores obtidos são suficientes
-def check_results(left, top, width, height):
+def check_results_passeio1_em():
+    left = 994
+    top = 421
+    width= 67
+    height =29
     # Capturar tela da área de resultados
     screenshot = pyautogui.screenshot(region=(left, top, width, height))
     
     # Especificar o caminho completo para salvar a captura de tela
-    screenshot_path = "C:/Users/AdminDell/Desktop/SCREENSHOTS_RESULTS/results.png"  
+    screenshot_path = "C:/Users/AdminDell/Desktop/SCREENSHOTS_RESULTS/resultsEm.png"  
+    screenshot.save(screenshot_path)
+    # Usar OCR para extrair texto da imagem
+    results_text = pytesseract.image_to_string(screenshot_path)
+    float_result = float(results_text)
+    # Verificar se os valores atendem aos requisitos
+    if float_result >= 3.00:
+        return True
+    return False
+
+def check_results_passeio1_uo():
+    left = 1003
+    top = 453
+    width= 37
+    height =22
+    # Capturar tela da área de resultados
+    screenshot = pyautogui.screenshot(region=(left, top, width, height))
+    
+    # Especificar o caminho completo para salvar a captura de tela
+    screenshot_path = "C:/Users/AdminDell/Desktop/SCREENSHOTS_RESULTS/resultsUo.png"  
     screenshot.save(screenshot_path)
     
     # Usar OCR para extrair texto da imagem
     results_text = pytesseract.image_to_string(screenshot_path)
-    
+    float_result = float(results_text)
     # Verificar se os valores atendem aos requisitos
-    if "Em ≥ 3.00" in results_text and "Uo ≥ 0.20" in results_text:
+    if float_result >= 0.20:
         return True
     return False
 
@@ -216,7 +239,7 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
     tab_interate(9)
     pyautogui.press('Down')
     # Verificar resultados
-    if check_results(994,422,74,254):
+    if check_results_passeio1_em() == True and check_results_passeio1_uo() == True:
         print(f"Luminária selecionada no cenário {cont__str} atende aos requisitos.")
     else:
         print(f"Luminária selecionada no cenário {cont__str} não atende aos requisitos.")

@@ -15,5 +15,6 @@ pytesseract.pytesseract.tesseract_cmd = caminho + r'\tesseract.exe'
 #pedir para o tesseract extrair o texto da imagem
 texto = pytesseract.image_to_string(imagem)
 
+
 print(texto)
 
