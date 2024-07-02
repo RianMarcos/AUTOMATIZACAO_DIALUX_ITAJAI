@@ -6,7 +6,6 @@ cont_geral = 0
 
 # Carregar os dados da planilha
 df = pd.read_excel('table_itajai_test.xlsx', sheet_name='RIAN - V4P4')
-
 # Verificar as colunas para encontrar os nomes corretos
 print(df.columns)
 
@@ -20,7 +19,7 @@ angulo = df['angulo'].tolist()
 poste_pista = df['poste_pista'].tolist()
 comprimento_braco = df['comprimento_braco'].tolist()
 
-#------------ABRINDO CENARIO PADRAO ITAJAI------------
+#------------ABRINDO CENARIO PADRAO ITAJAI-------------
 # 1 - ABRINDO ARQUIVO
 #pyautogui.doubleClick(147, 423, duration=0.5)
 #sleep(30)  # TEMPO ATÉ ABRIR E CARREGAR O DIALUX
