@@ -184,6 +184,19 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
     pyautogui.press('delete')
     pyautogui.write(str(comprimento_braco_x))
 
+
+    #----------------CHOOSE LUM----------------#
+    ruas = pyautogui.locateCenterOnScreen('ruas.png', confidence=0.6) #ir para ruas e voltar para luminarias para resetar tabs
+    pyautogui.click(ruas.x, ruas.y)
+    sleep(0.4)
+    luminaria = pyautogui.locateCenterOnScreen('luminaria.png', confidence=0.6)
+    pyautogui.click(luminaria.x, luminaria.y)
+    sleep(0.4)
+    tab_interate(9)
+    pyautogui.press('Down')
+
+    #-----------------------------------------#
+
     #modificando nome do projeto
     sleep(1)
     projecto = pyautogui.locateCenterOnScreen('guia_projecto.png', confidence=0.6)
