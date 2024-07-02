@@ -207,7 +207,7 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
     #salvando pdf relatório
     guardarpdf = pyautogui.locateCenterOnScreen('guardar_como.png', confidence=0.6)
     pyautogui.click(guardarpdf.x, guardarpdf.y)
-    sleep(0.1)
+    sleep(0.3)
     pdf_save = pyautogui.locateCenterOnScreen('pdf.png', confidence=0.6)
     pyautogui.click(pdf_save.x, pdf_save.y)
     sleep(0.5)
