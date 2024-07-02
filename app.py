@@ -1,8 +1,14 @@
 import pandas as pd
 import pyautogui
 from time import sleep, time
+import pytesseract
+import cv2 #opencv
+
 
 cont_geral = 0
+
+caminho = r"C:\Program Files\Tesseract-OCR"
+pytesseract.pytesseract.tesseract_cmd = caminho + r'\tesseract.exe'
 
 # Carregar os dados da planilha
 df = pd.read_excel('table_itajai_test.xlsx', sheet_name='RIAN - V4P4')
@@ -24,7 +30,22 @@ comprimento_braco = df['comprimento_braco'].tolist()
 #pyautogui.doubleClick(147, 423, duration=0.5)
 #sleep(30)  # TEMPO ATÉ ABRIR E CARREGAR O DIALUX
 
-
+# Função para verificar se os valores obtidos são suficientes
+def check_results(left, top, width, height):
+    # Capturar tela da área de resultados
+    screenshot = pyautogui.screenshot(region=(left, top, width, height))
+    
+    # Especificar o caminho completo para salvar a captura de tela
+    screenshot_path = "C:/Users/AdminDell/Desktop/SCREENSHOTS_RESULTS/results.png"  
+    screenshot.save(screenshot_path)
+    
+    # Usar OCR para extrair texto da imagem
+    results_text = pytesseract.image_to_string(screenshot_path)
+    
+    # Verificar se os valores atendem aos requisitos
+    if "Em ≥ 3.00" in results_text and "Uo ≥ 0.20" in results_text:
+        return True
+    return False
 
 def tab_interate(cont):
     i = 0
@@ -194,6 +215,11 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
     sleep(0.4)
     tab_interate(9)
     pyautogui.press('Down')
+    # Verificar resultados
+    if check_results(994,422,74,254):
+        print(f"Luminária selecionada no cenário {cont__str} atende aos requisitos.")
+    else:
+        print(f"Luminária selecionada no cenário {cont__str} não atende aos requisitos.")
 
     #-----------------------------------------#
 
@@ -261,10 +287,7 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
     sleep(4)
 
 
-
-    
-    
-
+   
     #fazer a comparação de qual luminaria é a mais eficiente, para isso vamos tirar print dos resultados, extrair o texto das imagens 
     # e fazer uma comparação pra ver qual esta mais próximo do resultado. https://awari.com.br/ocr-em-python-aprenda-a-extrair-texto-de-imagens-com-facilidade/
     #ideia de comparação: extrair qual a classe da via e gerar um script que gera automaticamente uma planilha com os parametros para comparação

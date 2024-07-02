@@ -1,10 +1,19 @@
-import pandas as pd
 import pyautogui
-from time import sleep
 
-postes = pyautogui.locateCenterOnScreen('entre_postes.png', confidence=0.6)
-pyautogui.click(postes.x, postes.y)
-    # Selecionar todo o texto existente e apagar
-pyautogui.hotkey('ctrl', 'a')
-pyautogui.press('delete')
+# Obter coordenadas do canto superior esquerdo
+print("Posicione o cursor no canto superior esquerdo da área de resultados e pressione Enter.")
+input()
+left, top = pyautogui.position()
+print(f"Canto superior esquerdo: ({left}, {top})")
 
+# Obter coordenadas do canto inferior direito
+
+print("Posicione o cursor no canto inferior direito da área de resultados e pressione Enter.")
+input()
+right, bottom = pyautogui.position()
+print(f"Canto inferior direito: ({right}, {bottom})")
+
+# Calcular largura e altura
+width = right - left
+height = bottom - top
+print(f"Largura: {width}, Altura: {height}")
