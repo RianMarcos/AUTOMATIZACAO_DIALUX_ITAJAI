@@ -3,9 +3,13 @@ import pyautogui
 from time import sleep, time
 import pytesseract
 import cv2 #opencv
+import numpy as np
 
 
 cont_geral = 0
+
+empasseio = 3.0
+uopasseio = 0.20
 
 caminho = r"C:\Program Files\Tesseract-OCR"
 pytesseract.pytesseract.tesseract_cmd = caminho + r'\tesseract.exe'
@@ -30,11 +34,28 @@ comprimento_braco = df['comprimento_braco'].tolist()
 #pyautogui.doubleClick(147, 423, duration=0.5)
 #sleep(30)  # TEMPO ATÉ ABRIR E CARREGAR O DIALUX
 
+def check_all(screenshot_path):
+    image = cv2.imread(screenshot_path)
+    hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+    
+    # Define range for green color in HSV
+    lower_green = np.array([40, 40, 40])
+    upper_green = np.array([80, 255, 255])
+    
+    mask = cv2.inRange(hsv_image, lower_green, upper_green)
+    green_pixels = cv2.countNonZero(mask)
+    
+    # Assumindo que cada "check" verde ocupa um número significativo de pixels verdes
+    if green_pixels >= 6 * 100:  # Ajuste 100 conforme necessário para corresponder ao tamanho dos "checks"
+        return True
+    return False
+
+
 # Função para verificar se os valores obtidos são suficientes
 def check_results_passeio1_em():
-    left = 994
-    top = 421
-    width= 67
+    left = 992
+    top = 477
+    width= 69
     height =29
     # Capturar tela da área de resultados
     screenshot = pyautogui.screenshot(region=(left, top, width, height))
@@ -46,15 +67,15 @@ def check_results_passeio1_em():
     results_text = pytesseract.image_to_string(screenshot_path)
     float_result = float(results_text)
     # Verificar se os valores atendem aos requisitos
-    if float_result >= 3.00:
+    if float_result >= empasseio:
         return True
     return False
 
 def check_results_passeio1_uo():
-    left = 1003
-    top = 453
-    width= 37
-    height =22
+    left = 999
+    top = 508
+    width= 64
+    height =23
     # Capturar tela da área de resultados
     screenshot = pyautogui.screenshot(region=(left, top, width, height))
     
@@ -66,7 +87,7 @@ def check_results_passeio1_uo():
     results_text = pytesseract.image_to_string(screenshot_path)
     float_result = float(results_text)
     # Verificar se os valores atendem aos requisitos
-    if float_result >= 0.20:
+    if float_result >= uopasseio:
         return True
     return False
 
@@ -92,6 +113,7 @@ def scroll_to_position(target_y, steps=200):
             scrollbar_position = pyautogui.position()
             pyautogui.moveTo(scrollbar_position.x, scrollbar_position.y)
             break
+
 
 # Iterar sobre os valores extraídos e digitar no campo correspondente
 for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altura_lum_x, angulo_x, poste_pista_x, comprimento_braco_x in zip(larg_passeio_opost, largura_via, larg_passeio_adj, entre_postes, altura_lum, angulo, poste_pista, comprimento_braco):
@@ -229,22 +251,44 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
     pyautogui.write(str(comprimento_braco_x))
 
 
-    #----------------CHOOSE LUM----------------#
+    #------------------------------------------#CHOOSE LUM-------------------------------------------#
+    check_lum = []
+    lum = ["lum1", "lum2", "lum3", "lum4", "lum5"]
+    
     ruas = pyautogui.locateCenterOnScreen('ruas.png', confidence=0.6) #ir para ruas e voltar para luminarias para resetar tabs
     pyautogui.click(ruas.x, ruas.y)
     sleep(0.4)
     luminaria = pyautogui.locateCenterOnScreen('luminaria.png', confidence=0.6)
     pyautogui.click(luminaria.x, luminaria.y)
     sleep(0.4)
-    tab_interate(9)
-    pyautogui.press('Down')
+    primeira_luminaria = pyautogui.locateCenterOnScreen('primeira_luminaria.png', confidence=0.6)
+    pyautogui.click(primeira_luminaria.x, primeira_luminaria.y)
+    sleep(0.4)
+    #tab_interate(9)
+    pyautogui.press('Down') #ir para proxima luminária
     # Verificar resultados
     if check_results_passeio1_em() == True and check_results_passeio1_uo() == True:
         print(f"Luminária selecionada no cenário {cont__str} atende aos requisitos.")
     else:
         print(f"Luminária selecionada no cenário {cont__str} não atende aos requisitos.")
 
-    #-----------------------------------------#
+        cont= 0
+        agnes = 20 
+        while cont < agnes:
+            screenshot_path = f"C:/Users/AdminDell/Desktop/SCREENSHOTS_RESULTS/results_{cont}.png"
+            if check_all(screenshot_path):
+                check_lum.append(lum[cont])
+            cont += 1
+
+        if check_lum:
+            best_lum = min(check_lum, key=lambda x: float(x.split()[-1]))
+            print(f"A luminária mais eficiente é: {best_lum}")
+        else:
+            print("Nenhuma luminária atende aos cenários.")
+
+
+
+    #--------------------------------------------------------------------------------------------------#
 
     #modificando nome do projeto
     sleep(1)
