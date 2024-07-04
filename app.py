@@ -4,10 +4,10 @@ from time import sleep, time
 import pytesseract
 import cv2 #opencv
 import numpy as np
+import os
 
 
 cont_geral = 0
-
 empasseio = 3.0
 uopasseio = 0.20
 
@@ -35,33 +35,53 @@ comprimento_braco = df['comprimento_braco'].tolist()
 #sleep(30)  # TEMPO ATÉ ABRIR E CARREGAR O DIALUX
 
 def check_all(screenshot_path):
+    if not os.path.exists(screenshot_path):
+        print(f"File not found: {screenshot_path}")
+        return False
+
     image = cv2.imread(screenshot_path)
+    if image is None:
+        print(f"Failed to load image: {screenshot_path}")
+        return False
+
+    # Convert image to HSV color space
     hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-    
+
     # Define range for green color in HSV
-    lower_green = np.array([40, 40, 40])
-    upper_green = np.array([80, 255, 255])
-    
+    lower_green = np.array([35, 100, 100])
+    upper_green = np.array([85, 255, 255])
+
+    # Create a mask for green color
     mask = cv2.inRange(hsv_image, lower_green, upper_green)
-    green_pixels = cv2.countNonZero(mask)
-    
-    # Assumindo que cada "check" verde ocupa um número significativo de pixels verdes
-    if green_pixels >= 6 * 100:  # Ajuste 100 conforme necessário para corresponder ao tamanho dos "checks"
+
+    # Debugging: save the mask to visualize
+    mask_path = screenshot_path.replace('.png', '_mask.png')
+    cv2.imwrite(mask_path, mask)
+    print(f"Mask saved to {mask_path}")
+
+    # Find contours in the mask
+    contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+
+    # Count the number of contours
+    num_checks = len(contours)
+    print(f"Number of checks found: {num_checks}")
+
+    # Check if the number of contours (checks) is at least 6
+    if num_checks >= 6:
         return True
     return False
 
-
 # Função para verificar se os valores obtidos são suficientes
 def check_results_passeio1_em():
-    left = 992
-    top = 477
-    width= 69
-    height =29
+    left = 1001
+    top = 551
+    width= 34
+    height =19
     # Capturar tela da área de resultados
     screenshot = pyautogui.screenshot(region=(left, top, width, height))
     
     # Especificar o caminho completo para salvar a captura de tela
-    screenshot_path = "C:/Users/AdminDell/Desktop/SCREENSHOTS_RESULTS/resultsEm.png"  
+    screenshot_path = f"C:/Users/AdminDell/Desktop/SCREENSHOTS_RESULTS/resultsEm_{cont_geral}.png"  
     screenshot.save(screenshot_path)
     # Usar OCR para extrair texto da imagem
     results_text = pytesseract.image_to_string(screenshot_path)
@@ -72,15 +92,15 @@ def check_results_passeio1_em():
     return False
 
 def check_results_passeio1_uo():
-    left = 999
-    top = 508
-    width= 64
-    height =23
+    left = 1003
+    top = 579
+    width= 33
+    height =22
     # Capturar tela da área de resultados
     screenshot = pyautogui.screenshot(region=(left, top, width, height))
     
     # Especificar o caminho completo para salvar a captura de tela
-    screenshot_path = "C:/Users/AdminDell/Desktop/SCREENSHOTS_RESULTS/resultsUo.png"  
+    screenshot_path = f"C:/Users/AdminDell/Desktop/SCREENSHOTS_RESULTS/resultsUo_{cont_geral}.png"  
     screenshot.save(screenshot_path)
     
     # Usar OCR para extrair texto da imagem
@@ -253,7 +273,7 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
 
     #------------------------------------------#CHOOSE LUM-------------------------------------------#
     check_lum = []
-    lum = ["lum1", "lum2", "lum3", "lum4", "lum5"]
+    lum = ["lum1", "lum2", "lum3", "lum4", "lum5", "lum6", "lum7", "lum8", "lum9", "lum10", "lum11", "lum12", "lum13", "lum14", "lum15", "lum16", "lum17", "lum18", "lum19", "lum20"]
     
     ruas = pyautogui.locateCenterOnScreen('ruas.png', confidence=0.6) #ir para ruas e voltar para luminarias para resetar tabs
     pyautogui.click(ruas.x, ruas.y)
@@ -265,27 +285,40 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
     pyautogui.click(primeira_luminaria.x, primeira_luminaria.y)
     sleep(0.4)
     #tab_interate(9)
-    pyautogui.press('Down') #ir para proxima luminária
+    #pyautogui.press('Down') #ir para proxima luminária
     # Verificar resultados
     if check_results_passeio1_em() == True and check_results_passeio1_uo() == True:
         print(f"Luminária selecionada no cenário {cont__str} atende aos requisitos.")
     else:
         print(f"Luminária selecionada no cenário {cont__str} não atende aos requisitos.")
 
-        cont= 0
-        agnes = 20 
-        while cont < agnes:
-            screenshot_path = f"C:/Users/AdminDell/Desktop/SCREENSHOTS_RESULTS/results_{cont}.png"
-            if check_all(screenshot_path):
-                check_lum.append(lum[cont])
-            cont += 1
-
-        if check_lum:
-            best_lum = min(check_lum, key=lambda x: float(x.split()[-1]))
-            print(f"A luminária mais eficiente é: {best_lum}")
-        else:
-            print("Nenhuma luminária atende aos cenários.")
-
+    cont= 0
+    agnes = 20 
+    while cont < agnes:
+        left = 1041
+        top = 550
+        width = 25
+        height = 255
+        # Capturar tela da área de resultados
+        screenshot = pyautogui.screenshot(region=(left, top, width, height))
+        # Especificar o caminho completo para salvar a captura de tela
+        screenshotchecks = f"C:/Users/AdminDell/Desktop/SCREENSHOTS_RESULTS/checks{cont}.png"  
+        screenshot.save(screenshotchecks)    
+        #screenshot_path = f"C:/Users/AdminDell/Desktop/SCREENSHOTS_RESULTS/results_{cont}.png"
+        
+        if check_all(screenshotchecks):
+            check_lum.append(lum[cont]) 
+        print(check_lum)
+        pyautogui.press('Down') #ir para proxima luminária 
+        sleep(1)
+        cont += 1 
+    '''  
+    if check_lum:
+        best_lum = min(check_lum, key=lambda x: float(x.split()[-1]))
+        print(f"A luminária mais eficiente é: {best_lum}")
+    else:
+        print("Nenhuma luminária atende aos cenários.")
+    ''' 
 
 
     #--------------------------------------------------------------------------------------------------#
