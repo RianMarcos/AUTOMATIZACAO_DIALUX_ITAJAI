@@ -22,3 +22,4 @@ print(f"Canto inferior direito: ({right}, {bottom})")
 width = right - left
 height = bottom - top
 print(f"Largura: {width}, Altura: {height}")
+                

@@ -73,49 +73,45 @@ def check_all(screenshot_path):
 
 # Função para verificar se os valores obtidos são suficientes
 def check_results_passeio1_em():
-    left = 1001
-    top = 551
-    width= 34
-    height =19
-    # Capturar tela da área de resultados
+    left = 990
+    top = 552
+    width = 51
+    height = 22
     screenshot = pyautogui.screenshot(region=(left, top, width, height))
-    
-    # Especificar o caminho completo para salvar a captura de tela
-    screenshot_path = f"C:/Users/AdminDell/Desktop/SCREENSHOTS_RESULTS/resultsEm_{cont_geral}.png"  
+    screenshot_path = f"C:/Users/AdminDell/Desktop/SCREENSHOTS_RESULTS/resultsEm_{cont_geral}.png"
     screenshot.save(screenshot_path)
-    # Usar OCR para extrair texto da imagem
-    results_text = pytesseract.image_to_string(screenshot_path)
-    float_result = float(results_text)
-    # Verificar se os valores atendem aos requisitos
-    if float_result >= empasseio:
-        return True
-    return False
+    results_text = pytesseract.image_to_string(screenshot_path, config='--psm 7').strip()
+    print(f"Resultado antes da conversão para float: {results_text}")
+    try:
+        float_result = float(results_text)
+        print(f"Resultado depois da conversão para float {float_result}")
+    except ValueError:
+        print(f"Erro ao converter Em result: '{results_text}'")
+        float_result = float('inf')  # Usa um valor muito alto para evitar que este resultado seja selecionado
+    return float_result
 
 def check_results_passeio1_uo():
-    left = 1003
-    top = 579
-    width= 33
-    height =22
-    # Capturar tela da área de resultados
+    left = 999
+    top = 582
+    width = 39
+    height = 18
     screenshot = pyautogui.screenshot(region=(left, top, width, height))
-    
-    # Especificar o caminho completo para salvar a captura de tela
-    screenshot_path = f"C:/Users/AdminDell/Desktop/SCREENSHOTS_RESULTS/resultsUo_{cont_geral}.png"  
+    screenshot_path = f"C:/Users/AdminDell/Desktop/SCREENSHOTS_RESULTS/resultsUo_{cont_geral}.png"
     screenshot.save(screenshot_path)
+    results_text = pytesseract.image_to_string(screenshot_path, config='--psm 7').strip()
     
-    # Usar OCR para extrair texto da imagem
-    results_text = pytesseract.image_to_string(screenshot_path)
-    float_result = float(results_text)
-    # Verificar se os valores atendem aos requisitos
-    if float_result >= uopasseio:
-        return True
-    return False
+    try:
+        float_result = float(results_text)
+    except ValueError:
+        print(f"Erro ao converter Uo result: '{results_text}'")
+        float_result = float('inf')  # Usa um valor muito alto para evitar que este resultado seja selecionado
+    return float_result
 
 def tab_interate(cont):
     i = 0
-    while i<cont:
+    while i < cont:
         pyautogui.press('tab')
-        i = i +1
+        i += 1
     i = 0
 
 def scroll_to_position(target_y, steps=200):
@@ -137,8 +133,8 @@ def scroll_to_position(target_y, steps=200):
 
 # Iterar sobre os valores extraídos e digitar no campo correspondente
 for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altura_lum_x, angulo_x, poste_pista_x, comprimento_braco_x in zip(larg_passeio_opost, largura_via, larg_passeio_adj, entre_postes, altura_lum, angulo, poste_pista, comprimento_braco):
-    cont_geral = cont_geral +1 #var para fazer a contagem de cenários 
-    cont__str = str(cont_geral); #var para fazer conversão de int para string e passar como parametro no nome do cenário
+    cont_geral += 1  # var para fazer a contagem de cenários 
+    cont__str = str(cont_geral)  # var para fazer conversão de int para string e passar como parametro no nome do cenário
     
     # Abrindo guia planejamento
     pyautogui.click(399, 82, duration=0.5)
@@ -287,40 +283,73 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
     #tab_interate(9)
     #pyautogui.press('Down') #ir para proxima luminária
     # Verificar resultados
-    if check_results_passeio1_em() == True and check_results_passeio1_uo() == True:
-        print(f"Luminária selecionada no cenário {cont__str} atende aos requisitos.")
-    else:
-        print(f"Luminária selecionada no cenário {cont__str} não atende aos requisitos.")
+    #if check_results_passeio1_em() == True and check_results_passeio1_uo() == True:
+     #   print(f"Luminária selecionada no cenário {cont__str} atende aos requisitos.")
+    #else:
+     #   print(f"Luminária selecionada no cenário {cont__str} não atende aos requisitos.")
 
     cont= 0
     agnes = 20 
+    continua = False
+
+    left = 1041
+    top = 550
+    width = 25
+    height = 255
+    # Capturar tela da área de resultados
+    screenshot = pyautogui.screenshot(region=(left, top, width, height)) #captura checks
+    # Especificar o caminho completo para salvar a captura de tela
+    screenshotchecks = f"C:/Users/AdminDell/Desktop/SCREENSHOTS_RESULTS/checks{cont}.png"  
+    screenshot.save(screenshotchecks)    
+    #screenshot_path = f"C:/Users/AdminDell/Desktop/SCREENSHOTS_RESULTS/results_{cont}.png"
+            
+    while continua == False:   
+        left = 1041
+        top = 550
+        width = 25
+        height = 255
+        # Capturar tela da área de resultados
+        screenshot = pyautogui.screenshot(region=(left, top, width, height)) #captura checks
+        # Especificar o caminho completo para salvar a captura de tela
+        screenshotchecks = f"C:/Users/AdminDell/Desktop/SCREENSHOTS_RESULTS/checks{cont}.png"  
+        screenshot.save(screenshotchecks)    
+        #screenshot_path = f"C:/Users/AdminDell/Desktop/SCREENSHOTS_RESULTS/results_{cont}.png"
+        if check_all(screenshotchecks) ==True:
+            continua = True
+        else:
+            continua = False
+            pyautogui.press('Down') #ir para proxima luminária 
+            sleep(1)
+
+
+    '''
     while cont < agnes:
         left = 1041
         top = 550
         width = 25
         height = 255
         # Capturar tela da área de resultados
-        screenshot = pyautogui.screenshot(region=(left, top, width, height))
+        screenshot = pyautogui.screenshot(region=(left, top, width, height)) #captura checks
         # Especificar o caminho completo para salvar a captura de tela
         screenshotchecks = f"C:/Users/AdminDell/Desktop/SCREENSHOTS_RESULTS/checks{cont}.png"  
         screenshot.save(screenshotchecks)    
         #screenshot_path = f"C:/Users/AdminDell/Desktop/SCREENSHOTS_RESULTS/results_{cont}.png"
         
-        if check_all(screenshotchecks):
-            check_lum.append(lum[cont]) 
+        if check_all(screenshotchecks) ==True:
+            check_lum.append(lum[cont]) #coloca na lista as luminárias que atenderam os 6 checks
+            break
         print(check_lum)
         pyautogui.press('Down') #ir para proxima luminária 
         sleep(1)
         cont += 1 
-    '''  
-    if check_lum:
-        best_lum = min(check_lum, key=lambda x: float(x.split()[-1]))
-        print(f"A luminária mais eficiente é: {best_lum}")
+        
+   
+
+    if best_lum:
+        print(f"A luminária mais eficiente é: {best_lum} com Em: {best_em_result} e Uo: {best_uo_result}")
     else:
         print("Nenhuma luminária atende aos cenários.")
     ''' 
-
-
     #--------------------------------------------------------------------------------------------------#
 
     #modificando nome do projeto
