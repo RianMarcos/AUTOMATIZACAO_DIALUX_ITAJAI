@@ -243,26 +243,7 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
         tabs = 6 #qtde de tabs para passar para o proximo
         teste_central(x_img, y_img, tabs)
         sleep(0.5)
-        '''
-        try:
-            img_central = pyautogui.locateCenterOnScreen('central.png', confidence=0.8)
-            auxiliar = 1 if img_central is not None else 0   # Verifica se a imagem 'central.png' foi encontrada
-        except pyautogui.ImageNotFoundException:
-            auxiliar = 0
-        if auxiliar == 1: 
-            img_uni = pyautogui.locateCenterOnScreen('unilateral_inferior.png', confidence =0.7)
-            pyautogui.click(img_uni.x, img_uni.y)
-            tab_interate(6)
-            print("Canteiro central encontrado")
-        else:
-            img_uni = pyautogui.locateCenterOnScreen('unilateral_inferior.png', confidence =0.7)
-            pyautogui.click(img_uni.x, img_uni.y)
-            tab_interate(5)
-            print("Canteiro central não encontrado")
-        '''
-
-                
-
+  
     elif distribuicao[cont_geral-1] == 'bilateral':
         img_bilateral = pyautogui.locateCenterOnScreen('bilateral.png', confidence =0.7)
         pyautogui.click(img_bilateral.x, img_bilateral.y)
@@ -417,7 +398,7 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
     #--------------------------------------------------------------------------------------------------#
 
     #modificando nome do projeto
-    sleep(1)
+    sleep(1.5)
     projecto = pyautogui.locateCenterOnScreen('guia_projecto.png', confidence=0.6)
     pyautogui.click(projecto.x, projecto.y)
     sleep(0.4)
@@ -429,7 +410,7 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
     modify_name = "Itajai " + cont__str + " " + luminaria_escolhida
     pyautogui.write(modify_name.upper())  
     #pyautogui.write(str("Itajai " + cont__str + " " + luminaria_escolhida))
-    sleep(0.4)
+    sleep(1.5)
 
     #Gerando relat - guia_documentacao
     guia_doc = pyautogui.locateCenterOnScreen('guia_documentacao.png', confidence=0.6)
