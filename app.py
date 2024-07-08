@@ -14,7 +14,6 @@ uopasseio = 0.20
 caminho = r"C:\Program Files\Tesseract-OCR"
 pytesseract.pytesseract.tesseract_cmd = caminho + r'\tesseract.exe'
 
-#teste
 # Carregar os dados da planilha
 df = pd.read_excel('table_itajai_test.xlsx', sheet_name='RIAN - V4P4')
 # Verificar as colunas para encontrar os nomes corretos
