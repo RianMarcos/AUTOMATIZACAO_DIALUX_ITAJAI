@@ -39,6 +39,22 @@ qtde_faixas = df['qtde_faixas'].tolist()
 #pyautogui.doubleClick(147, 423, duration=0.5)
 #sleep(30)  # TEMPO ATÉ ABRIR E CARREGAR O DIALUX
 
+#função para verificar se possui canteiro central e fazer devido deslocamento de posição via 'tab'
+def teste_central(x_img, y_img, tabs):
+    try:
+        img_central = pyautogui.locateCenterOnScreen('central.png', confidence=0.8)
+        auxiliar = 1 if img_central is not None else 0   # Verifica se a imagem 'central.png' foi encontrada
+    except pyautogui.ImageNotFoundException:
+        auxiliar = 0
+    if auxiliar == 1: 
+        pyautogui.click(x_img, y_img)
+        tab_interate(tabs)
+        print("Canteiro central encontrado")
+    else:
+        pyautogui.click(x_img, y_img)
+        tab_interate(tabs - 1)
+        print("Canteiro central não encontrado")  
+
 def check_all(screenshot_path):
     if not os.path.exists(screenshot_path):
         print(f"File not found: {screenshot_path}")
@@ -215,48 +231,66 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
     #postes = pyautogui.locateCenterOnScreen('entre_postes.png', confidence=0.6)
     #pyautogui.click(postes.x, postes.y)
     #Selecionando tipo de distruibuicao dos postes
-    print(distribuicao[cont_geral-1])
+
+    valida_central = 0
     if distribuicao[cont_geral-1] == 'unilateral' or distribuicao[cont_geral-1] == 'unilateral inferior' or distribuicao[cont_geral-1] == 'unilateral_inferior' :
         img_uni = pyautogui.locateCenterOnScreen('unilateral_inferior.png', confidence =0.7)
         pyautogui.click(img_uni.x, img_uni.y)
         print("ENTROU NO UNILATERAL")
-        sleep(5)
+        sleep(1)
+        x_img = img_uni.x #posicao da distruibuicao
+        y_img = img_uni.y
+        tabs = 6 #qtde de tabs para passar para o proximo
+        teste_central(x_img, y_img, tabs)
+        sleep(0.5)
+        '''
         try:
             img_central = pyautogui.locateCenterOnScreen('central.png', confidence=0.8)
             auxiliar = 1 if img_central is not None else 0   # Verifica se a imagem 'central.png' foi encontrada
         except pyautogui.ImageNotFoundException:
             auxiliar = 0
         if auxiliar == 1: 
+            img_uni = pyautogui.locateCenterOnScreen('unilateral_inferior.png', confidence =0.7)
+            pyautogui.click(img_uni.x, img_uni.y)
             tab_interate(6)
             print("Canteiro central encontrado")
         else:
+            img_uni = pyautogui.locateCenterOnScreen('unilateral_inferior.png', confidence =0.7)
+            pyautogui.click(img_uni.x, img_uni.y)
             tab_interate(5)
             print("Canteiro central não encontrado")
+        '''
+
+                
+
     elif distribuicao[cont_geral-1] == 'bilateral':
         img_bilateral = pyautogui.locateCenterOnScreen('bilateral.png', confidence =0.7)
         pyautogui.click(img_bilateral.x, img_bilateral.y)
-        sleep(1)        
-        img_central = pyautogui.locateCenterOnScreen('central.png', confidence =0.7)
-        auxiliar = 1 if img_central is not None else 0   # Verifica se a imagem 'central.png' foi encontrada
-        if auxiliar == 1: 
-            tab_interate(4)
-        else:
-            tab_interate(3)
+        print("ENTROU NO bilateral")
+        sleep(1)
+        x_img = img_bilateral.x #posicao da distruibuicao
+        y_img = img_bilateral.y
+        tabs = 4 #qtde de tabs para passar para o proximo
+        teste_central(x_img, y_img, tabs)
+        sleep(0.5)
+
     elif distribuicao[cont_geral-1]== 'bilateral_alternada' or distribuicao[cont_geral-1] == 'bilateral alternada':
         img_bilateral_alternada = pyautogui.locateCenterOnScreen('bilateral_alternada.png', confidence =0.7)
         pyautogui.click(img_bilateral_alternada.x, img_bilateral_alternada.y)
-        sleep(1) 
-        img_central = pyautogui.locateCenterOnScreen('central.png', confidence =0.7)
-        auxiliar = 1 if img_central is not None else 0   # Verifica se a imagem 'central.png' foi encontrada
-        if auxiliar == 1: 
-            tab_interate(3)
-        else:
-            tab_interate(2)      
+        sleep(1)
+        x_img = img_bilateral_alternada.x #posicao da distruibuicao
+        y_img = img_bilateral_alternada.y
+        tabs = 3 #qtde de tabs para passar para o proximo
+        teste_central(x_img, y_img, tabs)
+        sleep(0.5)
+
     elif distribuicao[cont_geral-1] == 'central' or distribuicao[cont_geral-1]== 'canteiro central' or distribuicao[cont_geral-1]==  'canteiro_central' or distribuicao[cont_geral-1]== 'central':
+        valida_central = 1
         img_central = pyautogui.locateCenterOnScreen('central.png', confidence =0.7)
         pyautogui.click(img_central.x, img_central.y)
         sleep(1)     
         tab_interate(2)
+    
 
     sleep(3)
     #Distancia entre postes
@@ -276,9 +310,15 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
     pyautogui.hotkey('ctrl', 'a')
     pyautogui.press('delete')
     pyautogui.write(str(angulo_x))
+    
+    if(valida_central == 0): #trava o pendor se nao for distri_central
+        print("Entrou na validação")
+        tab_interate(2)
+        pyautogui.press('space')
+        sleep(0.5)
 
     #distância poste-pista
-    tab_interate(5)
+    tab_interate(3)
     pyautogui.hotkey('ctrl', 'a')
     pyautogui.press('delete')
     pyautogui.write(str(poste_pista_x))
@@ -387,7 +427,7 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
     pyautogui.press('delete')
     luminaria_escolhida = str(check_lum)
     modify_name = "Itajai " + cont__str + " " + luminaria_escolhida
-    pyautogui.write(modify_name.upper() + ".evo")  
+    pyautogui.write(modify_name.upper())  
     #pyautogui.write(str("Itajai " + cont__str + " " + luminaria_escolhida))
     sleep(0.4)
 
@@ -402,16 +442,16 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
     #salvando pdf relatório
     guardarpdf = pyautogui.locateCenterOnScreen('guardar_como.png', confidence=0.6)
     pyautogui.click(guardarpdf.x, guardarpdf.y)
-    sleep(0.3)
+    sleep(0.5)
     pdf_save = pyautogui.locateCenterOnScreen('pdf.png', confidence=0.6)
     pyautogui.click(pdf_save.x, pdf_save.y)
-    sleep(0.5)
+    sleep(0.8)
     ok_pdf = pyautogui.locateCenterOnScreen('ok_pdf.png', confidence=0.6)
     pyautogui.click(ok_pdf.x, ok_pdf.y)
-    sleep(0.5)
+    sleep(1)
     documentos = pyautogui.locateCenterOnScreen('documentos_w11.png', confidence=0.5)
     pyautogui.click(documentos.x, documentos.y)
-    sleep(0.5)
+    sleep(0.8)
     teste = pyautogui.locateCenterOnScreen('teste_pasta.png', confidence=0.6)
     pyautogui.doubleClick(teste.x, teste.y)
     sleep(0.5)
