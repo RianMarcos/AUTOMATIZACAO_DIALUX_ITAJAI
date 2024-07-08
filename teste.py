@@ -6,12 +6,7 @@ input()
 left, top = pyautogui.position()
 print(f"Canto superior esquerdo: ({left}, {top})")
 
-# Obter coorde
-# 
-# 
-# 
-# 
-# nadas do canto inferior direito
+# Obter coordenadas do canto inferior direito
 
 print("Posicione o cursor no canto inferior direito da área de resultados e pressione Enter.")
 input()

@@ -28,6 +28,7 @@ altura_lum = df['altura_lum'].tolist()
 angulo = df['angulo'].tolist()
 poste_pista = df['poste_pista'].tolist()
 comprimento_braco = df['comprimento_braco'].tolist()
+distribuicao = df['distribuicao'].str.lower().tolist()  
 # Converter a coluna 'qtde_faixas' para inteiros
 # Preencher valores ausentes com 0 e converter a coluna 'qtde_faixas' para inteiros
 df['qtde_faixas'] = df['qtde_faixas'].fillna(0).astype(int)
@@ -203,7 +204,7 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
     img = pyautogui.locateCenterOnScreen('luminaria.png', confidence=0.7)
     pyautogui.click(img.x, img.y)
     sleep(0.8)
-    
+    tab_interate(16)
     # Posicione o mouse sobre a scrollbar 
     #pyautogui.moveTo(492, 512)  # Ajuste as coordenadas conforme necessário
     #target = 917
@@ -213,9 +214,52 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
     #Distância entre postes entre_postes
     #postes = pyautogui.locateCenterOnScreen('entre_postes.png', confidence=0.6)
     #pyautogui.click(postes.x, postes.y)
-  
-    #Ditancia entr postes
-    tab_interate(20)
+    #Selecionando tipo de distruibuicao dos postes
+    print(distribuicao[cont_geral-1])
+    if distribuicao[cont_geral-1] == 'unilateral' or distribuicao[cont_geral-1] == 'unilateral inferior' or distribuicao[cont_geral-1] == 'unilateral_inferior' :
+        img_uni = pyautogui.locateCenterOnScreen('unilateral_inferior.png', confidence =0.7)
+        pyautogui.click(img_uni.x, img_uni.y)
+        print("ENTROU NO UNILATERAL")
+        sleep(5)
+        try:
+            img_central = pyautogui.locateCenterOnScreen('central.png', confidence=0.8)
+            auxiliar = 1 if img_central is not None else 0   # Verifica se a imagem 'central.png' foi encontrada
+        except pyautogui.ImageNotFoundException:
+            auxiliar = 0
+        if auxiliar == 1: 
+            tab_interate(6)
+            print("Canteiro central encontrado")
+        else:
+            tab_interate(5)
+            print("Canteiro central não encontrado")
+    elif distribuicao[cont_geral-1] == 'bilateral':
+        img_bilateral = pyautogui.locateCenterOnScreen('bilateral.png', confidence =0.7)
+        pyautogui.click(img_bilateral.x, img_bilateral.y)
+        sleep(1)        
+        img_central = pyautogui.locateCenterOnScreen('central.png', confidence =0.7)
+        auxiliar = 1 if img_central is not None else 0   # Verifica se a imagem 'central.png' foi encontrada
+        if auxiliar == 1: 
+            tab_interate(4)
+        else:
+            tab_interate(3)
+    elif distribuicao[cont_geral-1]== 'bilateral_alternada' or distribuicao[cont_geral-1] == 'bilateral alternada':
+        img_bilateral_alternada = pyautogui.locateCenterOnScreen('bilateral_alternada.png', confidence =0.7)
+        pyautogui.click(img_bilateral_alternada.x, img_bilateral_alternada.y)
+        sleep(1) 
+        img_central = pyautogui.locateCenterOnScreen('central.png', confidence =0.7)
+        auxiliar = 1 if img_central is not None else 0   # Verifica se a imagem 'central.png' foi encontrada
+        if auxiliar == 1: 
+            tab_interate(3)
+        else:
+            tab_interate(2)      
+    elif distribuicao[cont_geral-1] == 'central' or distribuicao[cont_geral-1]== 'canteiro central' or distribuicao[cont_geral-1]==  'canteiro_central' or distribuicao[cont_geral-1]== 'central':
+        img_central = pyautogui.locateCenterOnScreen('central.png', confidence =0.7)
+        pyautogui.click(img_central.x, img_central.y)
+        sleep(1)     
+        tab_interate(2)
+
+    sleep(3)
+    #Distancia entre postes
     pyautogui.hotkey('ctrl', 'a')
     pyautogui.press('delete')
     # Digitando o novo valor para larg_passeio_adjacente
@@ -353,7 +397,7 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
     sleep(1.5)
     exibir = pyautogui.locateCenterOnScreen('exibir_doc.png', confidence=0.6)
     pyautogui.click(exibir.x, exibir.y)
-    sleep(13)
+    sleep(15)
 
     #salvando pdf relatório
     guardarpdf = pyautogui.locateCenterOnScreen('guardar_como.png', confidence=0.6)
