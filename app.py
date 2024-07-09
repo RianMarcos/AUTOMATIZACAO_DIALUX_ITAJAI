@@ -10,6 +10,7 @@ import os
 cont_geral = 0
 empasseio = 3.0
 uopasseio = 0.20
+check_distri = 0
 
 caminho = r"C:\Program Files\Tesseract-OCR"
 pytesseract.pytesseract.tesseract_cmd = caminho + r'\tesseract.exe'
@@ -28,11 +29,13 @@ altura_lum = df['altura_lum'].tolist()
 angulo = df['angulo'].tolist()
 poste_pista = df['poste_pista'].tolist()
 comprimento_braco = df['comprimento_braco'].tolist()
-distribuicao = df['distribuicao'].str.lower().tolist()  
+distribuicao = df['distribuicao'].str.lower().tolist()      
 # Converter a coluna 'qtde_faixas' para inteiros
 # Preencher valores ausentes com 0 e converter a coluna 'qtde_faixas' para inteiros
 df['qtde_faixas'] = df['qtde_faixas'].fillna(0).astype(int)
 qtde_faixas = df['qtde_faixas'].tolist()
+qtde_ruas = df['qtde_ruas'].tolist()
+
 
 #------------ABRINDO CENARIO PADRAO ITAJAI-------------
 # 1 - ABRINDO ARQUIVO
@@ -154,17 +157,62 @@ def scroll_to_position(target_y, steps=200):
 
 # Iterar sobre os valores extraídos e digitar no campo correspondente
 for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altura_lum_x, angulo_x, poste_pista_x, comprimento_braco_x, qtde_faixas_x in zip(larg_passeio_opost, largura_via, larg_passeio_adj, entre_postes, altura_lum, angulo, poste_pista, comprimento_braco, qtde_faixas):
+
     cont_geral += 1  # var para fazer a contagem de cenários 
     cont__str = str(cont_geral)  # var para fazer conversão de int para string e passar como parametro no nome do cenário
     
     # Abrindo guia planejamento
     pyautogui.click(399, 82, duration=0.5)
     sleep(1.5)
-    
     ruas = pyautogui.locateCenterOnScreen('ruas.png', confidence=0.6)
     pyautogui.click(ruas.x, ruas.y)
     sleep(1)
-     # Selecionando o passeio1
+    auxiliar_1 = 0
+    if distribuicao[cont_geral-1] == 'central' or distribuicao[cont_geral-1]== 'canteiro central' or distribuicao[cont_geral-1]==  'canteiro_central' or distribuicao[cont_geral-1]== 'central':
+        #validar se ja existe canteiro central, se nao existir adicionar 
+        try:
+            faixa_central_1 = pyautogui.locateCenterOnScreen('faixa_central_1.png', confidence=0.8)
+            auxiliar_1 = 1 if faixa_central_1 is not None else 0  
+        except pyautogui.ImageNotFoundException:
+            auxiliar_1 = 0
+            print('Imagem da faixa central não encontrada')
+        if auxiliar_1 == 1: 
+            print("Faixa ja adicionada")
+        else:
+            adicionar_faixa_central = pyautogui.locateCenterOnScreen('adicionar_faixa_central.png', confidence=0.8)
+            pyautogui.click(adicionar_faixa_central.x, adicionar_faixa_central.y)
+            sleep(1)
+            faixa_central_1 = pyautogui.locateCenterOnScreen('faixa_central_1.png', confidence=0.8)
+            pyautogui.click(faixa_central_1.x, faixa_central_1.y)
+            sleep(2)
+            seta_baixo = pyautogui.locateCenterOnScreen('seta_baixo.png', confidence=0.9)
+            pyautogui.click(seta_baixo.x, seta_baixo.y)
+            sleep(1)
+            adicionar_pista = pyautogui.locateCenterOnScreen('adicionar_pista.png', confidence=0.9)
+            pyautogui.click(adicionar_pista.x, adicionar_pista.y)
+            sleep(2)
+            pista_de_rodagem2 = pyautogui.locateCenterOnScreen('pista_de_rodagem2.png', confidence=0.9)
+            pyautogui.click(pista_de_rodagem2.x, pista_de_rodagem2.y)
+            sleep(1.5)
+            seta_baixo = pyautogui.locateCenterOnScreen('seta_baixo.png', confidence=0.9)
+            pyautogui.click(seta_baixo.x, seta_baixo.y)
+            sleep(1)  
+    else:
+        pista_de_rodagem2 = pyautogui.locateCenterOnScreen('pista_de_rodagem2.png', confidence=0.9)
+        pyautogui.click(pista_de_rodagem2.x, pista_de_rodagem2.y)
+        sleep(0.8)
+        remover = pyautogui.locateCenterOnScreen('remover.png', confidence=0.9)
+        pyautogui.click(remover.x, remover.y)
+        sleep(2)
+
+        faixa_central_1 = pyautogui.locateCenterOnScreen('faixa_central_1.png', confidence=0.8)
+        pyautogui.click(faixa_central_1.x, faixa_central_1.y)
+        sleep(2)
+        remover2 = pyautogui.locateCenterOnScreen('remover2.png', confidence=0.9)
+        pyautogui.click(remover2.x, remover2.y)
+        sleep(2)
+    
+    # Selecionando o passeio1
     #tab_interate(8)
     passeio1 = pyautogui.locateCenterOnScreen('passeio1.png', confidence=0.7)
     pyautogui.doubleClick(passeio1.x, passeio1.y)
