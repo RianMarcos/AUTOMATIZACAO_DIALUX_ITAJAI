@@ -198,19 +198,22 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
             pyautogui.click(seta_baixo.x, seta_baixo.y)
             sleep(1)  
     else:
-        pista_de_rodagem2 = pyautogui.locateCenterOnScreen('pista_de_rodagem2.png', confidence=0.9)
-        pyautogui.click(pista_de_rodagem2.x, pista_de_rodagem2.y)
-        sleep(0.8)
-        remover = pyautogui.locateCenterOnScreen('remover.png', confidence=0.9)
-        pyautogui.click(remover.x, remover.y)
-        sleep(2)
+        try: 
+            faixa_central_1 = pyautogui.locateCenterOnScreen('faixa_central_1.png', confidence=0.8)
+            pyautogui.click(faixa_central_1.x, faixa_central_1.y)
+            sleep(2)
+            remover2 = pyautogui.locateCenterOnScreen('remover2.png', confidence=0.9)
+            pyautogui.click(remover2.x, remover2.y)
+            sleep(2)
 
-        faixa_central_1 = pyautogui.locateCenterOnScreen('faixa_central_1.png', confidence=0.8)
-        pyautogui.click(faixa_central_1.x, faixa_central_1.y)
-        sleep(2)
-        remover2 = pyautogui.locateCenterOnScreen('remover2.png', confidence=0.9)
-        pyautogui.click(remover2.x, remover2.y)
-        sleep(2)
+            pista_de_rodagem2 = pyautogui.locateCenterOnScreen('pista_de_rodagem2.png', confidence=0.9)
+            pyautogui.click(pista_de_rodagem2.x, pista_de_rodagem2.y)
+            sleep(0.8)
+            remover = pyautogui.locateCenterOnScreen('remover.png', confidence=0.9)
+            pyautogui.click(remover.x, remover.y)
+            sleep(2)
+        except pyautogui.ImageNotFoundException:
+            print("Imagem do canteiro central nao encontrada")
     
     # Selecionando o passeio1
     #tab_interate(8)
