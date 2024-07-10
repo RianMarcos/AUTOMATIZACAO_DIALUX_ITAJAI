@@ -60,7 +60,7 @@ def teste_central(x_img, y_img, tabs):
         tab_interate(tabs - 1)
         print("Canteiro central não encontrado")  
 
-def check_all(screenshot_path):
+def check_all(screenshot_path, validacao_central):
     if not os.path.exists(screenshot_path):
         print(f"File not found: {screenshot_path}")
         return False
@@ -92,10 +92,15 @@ def check_all(screenshot_path):
     num_checks = len(contours)
     print(f"Number of checks found: {num_checks}")
 
-    # Check if the number of contours (checks) is at least 6
-    if num_checks >= 6:
-        return True
-    return False
+    # Check if the number of contours (checks)
+    if(validacao_central == 1):
+        if num_checks >= 8:
+            return True
+        return False
+    else:
+        if num_checks >= 6:
+            return True
+        return False
 
 # Função para verificar se os valores obtidos são suficientes
 def check_results_passeio1_em():
@@ -515,17 +520,17 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
     cont = -1    
     while continua == False: 
         cont += 1   
-        left = 1041
-        top = 550
-        width = 25
-        height = 255
+        left = 1052
+        top = 450
+        width = 31
+        height = 357
         # Capturar tela da área de resultados
         screenshot = pyautogui.screenshot(region=(left, top, width, height)) #captura checks
         # Especificar o caminho completo para salvar a captura de tela
         screenshotchecks = f"C:/Users/AdminDell/Desktop/SCREENSHOTS_RESULTS/checks{cont}.png"  
         screenshot.save(screenshotchecks)    
         #screenshot_path = f"C:/Users/AdminDell/Desktop/SCREENSHOTS_RESULTS/results_{cont}.png"
-        if check_all(screenshotchecks) ==True:
+        if check_all(screenshotchecks, valida_central) ==True:
             continua = True
             check_lum.append(lum[cont])
         else:
