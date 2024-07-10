@@ -37,6 +37,10 @@ qtde_faixas = df['qtde_faixas'].tolist()
 qtde_ruas = df['qtde_ruas'].tolist()
 larg_canteiro_central = df['larg_canteiro_central'].tolist()
 pendor = df['pendor'].tolist()
+classe_via = df['classe_via'].str.lower().tolist() 
+classe_passeio = df['classe_passeio'].str.lower().tolist() 
+
+
 
 
 #------------ABRINDO CENARIO PADRAO ITAJAI-------------
@@ -309,6 +313,21 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
 
     else:
         try: 
+            #antes de remover o passeio será necessário mover a distribuicao do canteiro central p/ qqlr outra
+            luminaria = pyautogui.locateCenterOnScreen('luminaria.png', confidence=0.7)
+            pyautogui.doubleClick(luminaria.x, luminaria.y)
+            sleep(0.5)
+
+            tab_interate(16)
+            bilateral = pyautogui.locateCenterOnScreen('bilateral.png', confidence=0.8)
+            pyautogui.doubleClick(bilateral.x, bilateral.y)
+            sleep(0.5)  
+            
+            ruas = pyautogui.locateCenterOnScreen('ruas.png', confidence=0.8)
+            pyautogui.doubleClick(ruas.x, ruas.y)
+            sleep(0.5)  
+
+            #removendo canteiro central e segunda via adicionada
             faixa_central_1 = pyautogui.locateCenterOnScreen('faixa_central_1.png', confidence=0.8)
             pyautogui.click(faixa_central_1.x, faixa_central_1.y)
             sleep(2)
