@@ -35,6 +35,8 @@ distribuicao = df['distribuicao'].str.lower().tolist()
 df['qtde_faixas'] = df['qtde_faixas'].fillna(0).astype(int)
 qtde_faixas = df['qtde_faixas'].tolist()
 qtde_ruas = df['qtde_ruas'].tolist()
+larg_canteiro_central = df['larg_canteiro_central'].tolist()
+pendor = df['pendor'].tolist()
 
 
 #------------ABRINDO CENARIO PADRAO ITAJAI-------------
@@ -156,7 +158,7 @@ def scroll_to_position(target_y, steps=200):
 
 
 # Iterar sobre os valores extraídos e digitar no campo correspondente
-for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altura_lum_x, angulo_x, poste_pista_x, comprimento_braco_x, qtde_faixas_x in zip(larg_passeio_opost, largura_via, larg_passeio_adj, entre_postes, altura_lum, angulo, poste_pista, comprimento_braco, qtde_faixas):
+for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altura_lum_x, angulo_x, poste_pista_x, comprimento_braco_x, qtde_faixas_x, larg_canteiro_central_x, pendor_x in zip(larg_passeio_opost, largura_via, larg_passeio_adj, entre_postes, altura_lum, angulo, poste_pista, comprimento_braco, qtde_faixas, larg_canteiro_central, pendor):
 
     cont_geral += 1  # var para fazer a contagem de cenários 
     cont__str = str(cont_geral)  # var para fazer conversão de int para string e passar como parametro no nome do cenário
@@ -194,9 +196,110 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
             pista_de_rodagem2 = pyautogui.locateCenterOnScreen('pista_de_rodagem2.png', confidence=0.9)
             pyautogui.click(pista_de_rodagem2.x, pista_de_rodagem2.y)
             sleep(1.5)
+            tab_interate(10)
+            pyautogui.press('left')
+            pyautogui.press('left')
+            pyautogui.press('left')
+            pyautogui.press('left')
+            pyautogui.press('left')
+            pyautogui.press('left')
+            pyautogui.press('left')
+            sleep(8)
             seta_baixo = pyautogui.locateCenterOnScreen('seta_baixo.png', confidence=0.9)
             pyautogui.click(seta_baixo.x, seta_baixo.y)
-            sleep(1)  
+            sleep(1)
+
+        #restante dos passos para inserir valores nos campos correspondentes 
+        #PASSEIO1
+        passeio1 = pyautogui.locateCenterOnScreen('passeio1.png', confidence=0.7)
+        pyautogui.doubleClick(passeio1.x, passeio1.y)
+        sleep(1.5)
+        tab_interate(3)
+        # Selecionar todo o texto existente e apagar
+        pyautogui.hotkey('ctrl', 'a')
+        pyautogui.press('delete')
+        # Digitando o novo valor para larg_passeio_opost
+        pyautogui.write(str(larg_passeio_oposto))
+        sleep(1.5)
+
+        #PISTA DE RODAGEM2
+        tab_interate(11)
+        sleep(1)
+        pyautogui.press('Down')
+        # Clicando no campo largura via (ajustar coordenadas conforme necessário)
+        # pista1 = pyautogui.locateCenterOnScreen('pista1.png', confidence=0.7)
+        # pyautogui.doubleClick(pista1.x, pista1.y)
+        # sleep(1)
+        tab_interate(6)
+        # Selecionar todo o texto existente e apagar
+        pyautogui.hotkey('ctrl', 'a')
+        pyautogui.press('delete')
+        # Digitando o novo valor para largura_via
+        pyautogui.write(str(larg_via))
+        sleep(1)
+
+        tab_interate(1)
+        print("A quantidade de faixas é: "+ str(qtde_faixas_x))
+        sleep(0.5)
+        pyautogui.hotkey('ctrl', 'a')
+        pyautogui.press('delete')
+        # Digitando o novo valor para
+        # Digitando qtde de faixas
+        pyautogui.write(str(qtde_faixas_x))
+        sleep(1.5)
+   
+        #CANTEIRO CENTRAL
+        tab_interate(12) #validar se esta certo
+        pyautogui.press('Down')
+        tab_interate(3)
+        pyautogui.write(str(larg_canteiro_central_x))
+
+        #PISTA DE RODAGEM1
+        pyautogui.hotkey('shift', 'tab')
+        pyautogui.hotkey('shift', 'tab')
+        pyautogui.hotkey('shift', 'tab')
+        pyautogui.press('Down')
+        sleep(0.5)
+        # Clicando no campo largura via (ajustar coordenadas conforme necessário)
+        # pista1 = pyautogui.locateCenterOnScreen('pista1.png', confidence=0.7)
+        # pyautogui.doubleClick(pista1.x, pista1.y)
+        # sleep(1)
+        tab_interate(6)
+        # Selecionar todo o texto existente e apagar
+        pyautogui.hotkey('ctrl', 'a')
+        pyautogui.press('delete')
+        # Digitando o novo valor para largura_via
+        pyautogui.write(str(larg_via))
+        sleep(1)
+        tab_interate(1)
+        pyautogui.hotkey('ctrl', 'a')
+        pyautogui.press('delete')
+        print("A quantidade de faixas é: "+ str(qtde_faixas_x))
+        sleep(0.5)
+        # Digitando qtde de faixas
+        pyautogui.write(str(qtde_faixas_x))
+        sleep(1.5)
+        
+        #PASSEIO2
+        pyautogui.hotkey('shift', 'tab')
+        pyautogui.hotkey('shift', 'tab')
+        pyautogui.hotkey('shift', 'tab')
+        pyautogui.hotkey('shift', 'tab')
+        pyautogui.hotkey('shift', 'tab')
+        pyautogui.hotkey('shift', 'tab')
+        pyautogui.hotkey('shift', 'tab')
+        pyautogui.press('Down')
+        passeio2 = pyautogui.locateCenterOnScreen('passeio2.png', confidence=0.7)
+        pyautogui.doubleClick(passeio2.x, passeio2.y)
+        sleep(1)
+        tab_interate(3)
+        # Selecionar todo o texto existente e apagar
+        pyautogui.hotkey('ctrl', 'a')
+        pyautogui.press('delete')
+        # Digitando o novo valor para larg_passeio_opost
+        pyautogui.write(str(larg_passeio_adjacente))
+        sleep(1.5)      
+
     else:
         try: 
             faixa_central_1 = pyautogui.locateCenterOnScreen('faixa_central_1.png', confidence=0.8)
@@ -215,63 +318,72 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
         except pyautogui.ImageNotFoundException:
             print("Imagem do canteiro central nao encontrada")
     
-    # Selecionando o passeio1
-    #tab_interate(8)
-    passeio1 = pyautogui.locateCenterOnScreen('passeio1.png', confidence=0.7)
-    pyautogui.doubleClick(passeio1.x, passeio1.y)
-    sleep(1)
-    tab_interate(3)
-    # Selecionar todo o texto existente e apagar
-    pyautogui.hotkey('ctrl', 'a')
-    pyautogui.press('delete')
-    # Digitando o novo valor para larg_passeio_opost
-    pyautogui.write(str(larg_passeio_oposto))
-    sleep(1.5)
+        # Selecionando o passeio1
+        #tab_interate(8)
+        passeio1 = pyautogui.locateCenterOnScreen('passeio1.png', confidence=0.7)
+        pyautogui.doubleClick(passeio1.x, passeio1.y)
+        sleep(1)
+        tab_interate(3)
+        # Selecionar todo o texto existente e apagar
+        pyautogui.hotkey('ctrl', 'a')
+        pyautogui.press('delete')
+        # Digitando o novo valor para larg_passeio_opost
+        pyautogui.write(str(larg_passeio_oposto))
+        sleep(1.5)
 
-    ##--------------------- PARAMETROS RUA ---------------------
-    tab_interate(11)
-    sleep(1)
-    pyautogui.press('Down')
-    # Clicando no campo largura via (ajustar coordenadas conforme necessário)
-   # pista1 = pyautogui.locateCenterOnScreen('pista1.png', confidence=0.7)
-   # pyautogui.doubleClick(pista1.x, pista1.y)
-   # sleep(1)
-    tab_interate(6)
-    # Selecionar todo o texto existente e apagar
-    pyautogui.hotkey('ctrl', 'a')
-    pyautogui.press('delete')
-    # Digitando o novo valor para largura_via
-    pyautogui.write(str(larg_via))
-    sleep(1)
+        ##--------------------- PARAMETROS RUA ---------------------
+        tab_interate(11)
+        sleep(1)
+        pyautogui.press('Down')
+        # Clicando no campo largura via (ajustar coordenadas conforme necessário)
+    # pista1 = pyautogui.locateCenterOnScreen('pista1.png', confidence=0.7)
+    # pyautogui.doubleClick(pista1.x, pista1.y)
+    # sleep(1)
+        tab_interate(6)
+        # Selecionar todo o texto existente e apagar
+        pyautogui.hotkey('ctrl', 'a')
+        pyautogui.press('delete')
+        # Digitando o novo valor para largura_via
+        pyautogui.write(str(larg_via))
+        sleep(1)
 
-    tab_interate(1)
-    print("A quantidade de faixas é: "+ str(qtde_faixas_x))
-    sleep(0.5)
-    # Digitando qtde de faixas
-    pyautogui.write(str(qtde_faixas_x))
-    sleep(1.5)
-   
-    ##--------------------- PARAMETROS PASSEIO ADJACENTE ---------------------
-    tab_interate(12)
-    sleep(1)
-    pyautogui.press('Down')
-    # Selecionando o passeio2
-   # passeio2 = pyautogui.locateCenterOnScreen('passeio2.png', confidence=0.7)
-    #pyautogui.doubleClick(passeio2.x, passeio2.y)
-    #sleep(1)
-    tab_interate(3)
-    # Selecionar todo o texto existente e apagar
-    pyautogui.hotkey('ctrl', 'a')
-    pyautogui.press('delete')
-    # Digitando o novo valor para larg_passeio_adjacente
-    pyautogui.write(str(larg_passeio_adjacente))
-    sleep(0.8)
+        tab_interate(1)
+        print("A quantidade de faixas é: "+ str(qtde_faixas_x))
+        sleep(0.5)
+        # Digitando qtde de faixas
+        pyautogui.write(str(qtde_faixas_x))
+        sleep(1.5)
+    
+        ##--------------------- PARAMETROS PASSEIO ADJACENTE ---------------------
+        tab_interate(12)
+        sleep(1)
+        pyautogui.press('Down')
+        # Selecionando o passeio2
+    # passeio2 = pyautogui.locateCenterOnScreen('passeio2.png', confidence=0.7)
+        #pyautogui.doubleClick(passeio2.x, passeio2.y)
+        #sleep(1)
+        tab_interate(3)
+        # Selecionar todo o texto existente e apagar
+        pyautogui.hotkey('ctrl', 'a')
+        pyautogui.press('delete')
+        # Digitando o novo valor para larg_passeio_adjacente
+        pyautogui.write(str(larg_passeio_adjacente))
+        sleep(0.8)
 
     ##--------------------- PARAMETROS LUMINÁRIA ---------------------
     img = pyautogui.locateCenterOnScreen('luminaria.png', confidence=0.7)
     pyautogui.click(img.x, img.y)
     sleep(0.8)
     tab_interate(16)
+
+    #clicar no bilateral para atualizar distruibuições e liberar canteiro central
+    img_bilateral = pyautogui.locateCenterOnScreen('bilateral.png', confidence =0.7)
+    pyautogui.click(img_bilateral.x, img_bilateral.y)
+    sleep(3)
+    img_uni = pyautogui.locateCenterOnScreen('unilateral_inferior.png', confidence =0.7)
+    pyautogui.click(img_uni.x, img_uni.y)
+    sleep(3)
+
     # Posicione o mouse sobre a scrollbar 
     #pyautogui.moveTo(492, 512)  # Ajuste as coordenadas conforme necessário
     #target = 917
@@ -318,8 +430,9 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
 
     elif distribuicao[cont_geral-1] == 'central' or distribuicao[cont_geral-1]== 'canteiro central' or distribuicao[cont_geral-1]==  'canteiro_central' or distribuicao[cont_geral-1]== 'central':
         valida_central = 1
-        img_central = pyautogui.locateCenterOnScreen('central.png', confidence =0.7)
+        img_central = pyautogui.locateCenterOnScreen('central.png', confidence =0.8)
         pyautogui.click(img_central.x, img_central.y)
+        print("Entrou na distri canteiro central")
         sleep(1)     
         tab_interate(2)
     
@@ -343,24 +456,27 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
     pyautogui.press('delete')
     pyautogui.write(str(angulo_x))
     
-    if(valida_central == 0): #trava o pendor se nao for distri_central
+    if(valida_central == 0): #trava o pendor se nao for distri_central e insere valores para poste_pista e braco
         print("Entrou na validação")
         tab_interate(2)
         pyautogui.press('space')
         sleep(0.5)
-
-    #distância poste-pista
-    tab_interate(3)
-    pyautogui.hotkey('ctrl', 'a')
-    pyautogui.press('delete')
-    pyautogui.write(str(poste_pista_x))
-    #comprimento do braço
-    tab_interate(2)
-    pyautogui.hotkey('ctrl', 'a')
-    pyautogui.press('delete')
-    pyautogui.write(str(comprimento_braco_x))
-
-
+        #distância poste-pista
+        tab_interate(3)
+        pyautogui.hotkey('ctrl', 'a')
+        pyautogui.press('delete')
+        pyautogui.write(str(poste_pista_x))
+        #comprimento do braço
+        tab_interate(2)
+        pyautogui.hotkey('ctrl', 'a')
+        pyautogui.press('delete')
+        pyautogui.write(str(comprimento_braco_x))
+    else: #se a distribuicao estiver no canteiro central, será necessário informar valor do pendor e até mesmo do deslocamento longitudinal
+        tab_interate(3)
+        pyautogui.hotkey('ctrl', 'a')
+        pyautogui.press('delete')
+        pyautogui.write(str(pendor_x))
+        #ADICIONAR AQUI DESLOCAMENTO LONGITUDINAL
     #------------------------------------------#CHOOSE LUM-------------------------------------------#
     check_lum = []
     lum = ["AGN7026D4", "AGN7030D4", "AGN7040D4", "AGN7050D4", "AGN7060D4", "AGN7070D4", "AGN7080D4", "AGN7090D4", "AGN7100D4", "AGN7110D4", "AGN7120D4", "AGN7130D4", "AGN7150D4", "AGN7160D4", "AGN7170D4", "AGN7180D4", "AGN7200D4", "AGN7220D4", "AGN7240D4"]
@@ -461,7 +577,7 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
     modify_name = "Itajai " + cont__str + " " + luminaria_escolhida
     pyautogui.write(modify_name.upper())  
     #pyautogui.write(str("Itajai " + cont__str + " " + luminaria_escolhida))
-    sleep(1.5)
+    sleep(2.3)
 
     #Gerando relat - guia_documentacao
     guia_doc = pyautogui.locateCenterOnScreen('guia_documentacao.png', confidence=0.6)
