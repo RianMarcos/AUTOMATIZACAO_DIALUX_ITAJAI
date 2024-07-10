@@ -257,6 +257,8 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
         tab_interate(12) #validar se esta certo
         pyautogui.press('Down')
         tab_interate(3)
+        pyautogui.hotkey('ctrl', 'a')
+        pyautogui.press('delete')
         pyautogui.write(str(larg_canteiro_central_x))
 
         #PISTA DE RODAGEM1
@@ -485,7 +487,7 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
     #------------------------------------------#CHOOSE LUM-------------------------------------------#
     check_lum = []
     lum = ["AGN7026D4", "AGN7030D4", "AGN7040D4", "AGN7050D4", "AGN7060D4", "AGN7070D4", "AGN7080D4", "AGN7090D4", "AGN7100D4", "AGN7110D4", "AGN7120D4", "AGN7130D4", "AGN7150D4", "AGN7160D4", "AGN7170D4", "AGN7180D4", "AGN7200D4", "AGN7220D4", "AGN7240D4"]
-    
+    tamanho_lista_luminarias = len(lum)
     ruas = pyautogui.locateCenterOnScreen('ruas.png', confidence=0.6) #ir para ruas e voltar para luminarias para resetar tabs
     pyautogui.click(ruas.x, ruas.y)
     sleep(0.4)
@@ -518,7 +520,8 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
     screenshot.save(screenshotchecks)    
     #screenshot_path = f"C:/Users/AdminDell/Desktop/SCREENSHOTS_RESULTS/results_{cont}.png"
     cont = -1    
-    while continua == False: 
+    cont_choose = 0
+    while continua == False and cont_choose < tamanho_lista_luminarias:
         cont += 1   
         left = 1052
         top = 450
@@ -537,7 +540,15 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
             continua = False
             pyautogui.press('Down') #ir para proxima luminária 
             sleep(1)
-
+        cont_choose +=1
+        print("CONTADOR WHILE")
+        print(cont_choose)
+        print("tamanho lista lums")
+        print(tamanho_lista_luminarias)
+        if(cont_choose == tamanho_lista_luminarias):
+            print("nenhuma luminaria atende o cenario")
+            check_lum = "[NAO_ATENDE]"
+            #adicionar aqui logica para salvar cenario sem luminarias
 
     '''
     while cont < agnes:
@@ -590,7 +601,7 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
     sleep(1.5)
     exibir = pyautogui.locateCenterOnScreen('exibir_doc.png', confidence=0.6)
     pyautogui.click(exibir.x, exibir.y)
-    sleep(15)
+    sleep(17)
 
     #salvando pdf relatório
     guardarpdf = pyautogui.locateCenterOnScreen('guardar_como.png', confidence=0.6)
