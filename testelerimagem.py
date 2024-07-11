@@ -1,5 +1,6 @@
 import pytesseract
 import cv2 #opencv
+import pyautogui
 
 # links uteis:
 # corrigir instalação windows: https://stackoverflow.com/questions/50951955/pytesseract-tesseractnotfound-error-tesseract-is-not-installed-or-its-not-i
@@ -17,4 +18,6 @@ texto = pytesseract.image_to_string(imagem)
 
 
 print(texto)
+
+
 

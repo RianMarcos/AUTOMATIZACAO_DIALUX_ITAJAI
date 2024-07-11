@@ -6,7 +6,6 @@ import cv2 #opencv
 import numpy as np
 import os
 
-
 cont_geral = 0
 empasseio = 3.0
 uopasseio = 0.20
@@ -39,8 +38,6 @@ larg_canteiro_central = df['larg_canteiro_central'].tolist()
 pendor = df['pendor'].tolist()
 classe_via = df['classe_via'].str.lower().tolist() 
 classe_passeio = df['classe_passeio'].str.lower().tolist() 
-
-
 
 
 #------------ABRINDO CENARIO PADRAO ITAJAI-------------
@@ -167,7 +164,39 @@ def scroll_to_position(target_y, steps=200):
 
 
 # Iterar sobre os valores extraídos e digitar no campo correspondente
-for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altura_lum_x, angulo_x, poste_pista_x, comprimento_braco_x, qtde_faixas_x, larg_canteiro_central_x, pendor_x in zip(larg_passeio_opost, largura_via, larg_passeio_adj, entre_postes, altura_lum, angulo, poste_pista, comprimento_braco, qtde_faixas, larg_canteiro_central, pendor):
+for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altura_lum_x, angulo_x, poste_pista_x, comprimento_braco_x, qtde_faixas_x, larg_canteiro_central_x, pendor_x, classe_via_x, classe_passeio_x in zip(larg_passeio_opost, largura_via, larg_passeio_adj, entre_postes, altura_lum, angulo, poste_pista, comprimento_braco, qtde_faixas, larg_canteiro_central, pendor, classe_via, classe_passeio):
+
+    if(classe_via_x == "v1" or classe_via_x == "V1"):
+        classe_via_em = 30
+        classe_via_uo = 0.4
+        print(classe_via_em)
+        print(classe_via_uo)
+    elif(classe_via_x == "v2"):
+        classe_via_em = 20
+        classe_via_uo = 0.3
+    elif(classe_via_x == "v3"):
+        classe_via_em = 15
+        classe_via_uo = 0.2
+    elif(classe_via_x == "v4"):
+        classe_via_em = 10
+        classe_via_uo = 0.2
+    elif(classe_via_x == "v5"):
+        classe_via_em = 5
+        classe_via_uo = 0.2
+
+    if(classe_passeio_x == "p1"):
+        classe_passeio_em = 20
+        classe_passeio_uo = 0.3
+    elif(classe_passeio_x == "p2"):
+        classe_passeio_em = 10
+        classe_passeio_uo = 0.25
+    elif(classe_passeio_x == "p3"):
+        classe_passeio_em = 5
+        classe_passeio_uo = 0.2
+    elif(classe_passeio_x == "p4"):
+        classe_passeio_em = 3
+        classe_passeio_uo = 0.2
+
 
     cont_geral += 1  # var para fazer a contagem de cenários 
     cont__str = str(cont_geral)  # var para fazer conversão de int para string e passar como parametro no nome do cenário
@@ -206,6 +235,8 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
             pyautogui.click(pista_de_rodagem2.x, pista_de_rodagem2.y)
             sleep(1.5)
             tab_interate(10)
+            pyautogui.press('left')
+            pyautogui.press('left')
             pyautogui.press('left')
             pyautogui.press('left')
             pyautogui.press('left')
@@ -503,6 +534,117 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
         pyautogui.press('delete')
         pyautogui.write(str(pendor_x))
         #ADICIONAR AQUI DESLOCAMENTO LONGITUDINAL
+
+    #colocar esse trecho do codigo em uma funcao
+    #------------------------------------------#MODIFICANDO Em e Uo-------------------------------------------#
+    #fechar todas as janelas 
+    #FAZER LOGICA QUE SÓ VAI FECHAR SEGUNDA PISTA DE HOUVER CANTEIRO CENTRAL
+    seta_passeio1 = pyautogui.locateCenterOnScreen('seta_passeio1.png', confidence=0.8)
+    pyautogui.click(seta_passeio1)
+    sleep(2)
+
+    if(valida_central == 1):
+        seta_pista_rodagem2 = pyautogui.locateCenterOnScreen('seta_pista_rodagem2.png', confidence=0.9)
+        pyautogui.click(seta_pista_rodagem2.x, seta_pista_rodagem2.y)
+
+    sleep(2)
+    seta_pista_rodagem1 = pyautogui.locateCenterOnScreen('seta_pista_rodagem1.png', confidence=0.9)
+    pyautogui.click(seta_pista_rodagem1.x, seta_pista_rodagem1.y)
+    sleep(2)
+    seta_passeio2 = pyautogui.locateCenterOnScreen('seta_passeio2.png', confidence=0.9)
+    pyautogui.click(seta_passeio2.x, seta_passeio2.y)
+
+    #abrir a janela necessária
+    seta_passeio1_closed = pyautogui.locateCenterOnScreen('seta_passeio1_closed.png', confidence=0.8)
+    pyautogui.click(seta_passeio1_closed)
+    sleep(2)
+
+    #modificar em 
+    em_parametro = pyautogui.locateCenterOnScreen('em_parametro.png', confidence=0.8)
+    pyautogui.click(em_parametro)
+    pyautogui.hotkey('ctrl', 'a')
+    pyautogui.press('delete')
+    pyautogui.write(str(classe_passeio_em))
+
+    #modificar uo
+    uo_parametro = pyautogui.locateCenterOnScreen('uo_parametro.png', confidence=0.8)
+    pyautogui.click(uo_parametro)
+    pyautogui.hotkey('ctrl', 'a')
+    pyautogui.press('delete')
+    pyautogui.write(str(classe_passeio_uo))
+
+    #fechar janela modificada e passar para próxima 
+    seta_passeio1 = pyautogui.locateCenterOnScreen('seta_passeio1.png', confidence=0.8)
+    pyautogui.click(seta_passeio1)
+    sleep(2)
+    pyautogui.scroll(-300)
+    sleep(2)
+    #passar para proxima
+    if(valida_central == 1):
+        #preencher valroes para canteiro central
+
+        #abrir a janela necessária
+        seta_pista2_closed = pyautogui.locateCenterOnScreen('seta_pista2_closed.png', confidence=0.9)
+        pyautogui.click(seta_pista2_closed)
+        sleep(2)
+
+        #modificar em 
+        em_parametro = pyautogui.locateCenterOnScreen('em_parametro.png', confidence=0.8)
+        pyautogui.click(em_parametro)
+        pyautogui.hotkey('ctrl', 'a')
+        pyautogui.press('delete')
+        pyautogui.write(str(classe_via_em))
+
+        #modificar uo
+        uo_parametro = pyautogui.locateCenterOnScreen('uo_parametro.png', confidence=0.8)
+        pyautogui.click(uo_parametro)
+        pyautogui.hotkey('ctrl', 'a')
+        pyautogui.press('delete')
+        pyautogui.write(str(classe_via_uo))
+        pyautogui.scroll(-300)
+        sleep(2)
+
+        #fechar janela modificada e passar para próxima 
+        seta_pista_rodagem2 = pyautogui.locateCenterOnScreen('seta_pista_rodagem2.png', confidence=0.9)
+        pyautogui.click(seta_pista_rodagem2)
+        sleep(2)
+        pyautogui.scroll(-300)
+        sleep(2)
+    
+    #abrir a janela necessária
+    seta_pista1_closed = pyautogui.locateCenterOnScreen('seta_pista1_closed.png', confidence=0.9)
+    pyautogui.click(seta_pista1_closed)
+    sleep(2)
+
+    #modificar em 
+    em_parametro = pyautogui.locateCenterOnScreen('em_parametro.png', confidence=0.8)
+    pyautogui.click(em_parametro)
+    pyautogui.hotkey('ctrl', 'a')
+    pyautogui.press('delete')
+    pyautogui.write(str(classe_via_em))
+
+    #modificar uo
+    uo_parametro = pyautogui.locateCenterOnScreen('uo_parametro.png', confidence=0.8)
+    pyautogui.click(uo_parametro)
+    pyautogui.hotkey('ctrl', 'a')
+    pyautogui.press('delete')
+    pyautogui.write(str(classe_via_uo))
+    sleep(0.2)
+    pyautogui.scroll(-300)
+    sleep(2)
+
+    #fechar janela modificada e passar para próxima 
+    seta_pista_rodagem1 = pyautogui.locateCenterOnScreen('seta_pista_rodagem1.png', confidence=0.9)
+    pyautogui.click(seta_pista_rodagem1)
+    sleep(2)
+    pyautogui.scroll(-300)
+    sleep(2)
+    
+
+    #repetir passos anteriores
+    #abrir todas as janelas novamente para verificar os checks
+    #lembrar de usar rolagem scroll
+
     #------------------------------------------#CHOOSE LUM-------------------------------------------#
     check_lum = []
     lum = ["AGN7026D4", "AGN7030D4", "AGN7040D4", "AGN7050D4", "AGN7060D4", "AGN7070D4", "AGN7080D4", "AGN7090D4", "AGN7100D4", "AGN7110D4", "AGN7120D4", "AGN7130D4", "AGN7150D4", "AGN7160D4", "AGN7170D4", "AGN7180D4", "AGN7200D4", "AGN7220D4", "AGN7240D4"]
