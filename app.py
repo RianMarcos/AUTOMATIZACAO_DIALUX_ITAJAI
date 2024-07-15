@@ -507,8 +507,20 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
     pyautogui.press('delete')
     pyautogui.write(str(altura_lum_x))
 
+    #se for canteiro central inserir duas luminarias por poste
+    if(valida_central == 1):
+        tab_interate(3)
+        pyautogui.hotkey('ctrl', 'a')
+        pyautogui.press('delete')
+        pyautogui.write(str(2))
+    else:
+        tab_interate(3)
+        pyautogui.hotkey('ctrl', 'a')
+        pyautogui.press('delete')
+        pyautogui.write(str(1))
+    sleep(0.6)
     #Angulo
-    tab_interate(5)
+    tab_interate(2)
     pyautogui.hotkey('ctrl', 'a')
     pyautogui.press('delete')
     pyautogui.write(str(angulo_x))
@@ -536,7 +548,7 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
         #ADICIONAR AQUI DESLOCAMENTO LONGITUDINAL
 
     #colocar esse trecho do codigo em uma funcao
-    #------------------------------------------#MODIFICANDO Em e Uo-------------------------------------------#
+    #----------------------------------------#MODIFICANDO CLASSIFIÇÃO Em e Uo-------------------------------------------#
     #fechar todas as janelas 
     #FAZER LOGICA QUE SÓ VAI FECHAR SEGUNDA PISTA DE HOUVER CANTEIRO CENTRAL
     seta_passeio1 = pyautogui.locateCenterOnScreen('seta_passeio1.png', confidence=0.8)
@@ -557,7 +569,7 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
     #abrir a janela necessária
     seta_passeio1_closed = pyautogui.locateCenterOnScreen('seta_passeio1_closed.png', confidence=0.8)
     pyautogui.click(seta_passeio1_closed)
-    sleep(2)
+    sleep(1)
 
     #modificar em 
     em_parametro = pyautogui.locateCenterOnScreen('em_parametro.png', confidence=0.8)
@@ -576,9 +588,9 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
     #fechar janela modificada e passar para próxima 
     seta_passeio1 = pyautogui.locateCenterOnScreen('seta_passeio1.png', confidence=0.8)
     pyautogui.click(seta_passeio1)
-    sleep(2)
+    sleep(1)
     pyautogui.scroll(-300)
-    sleep(2)
+    sleep(1)
     #passar para proxima
     if(valida_central == 1):
         #preencher valroes para canteiro central
@@ -586,7 +598,7 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
         #abrir a janela necessária
         seta_pista2_closed = pyautogui.locateCenterOnScreen('seta_pista2_closed.png', confidence=0.9)
         pyautogui.click(seta_pista2_closed)
-        sleep(2)
+        sleep(1)
 
         #modificar em 
         em_parametro = pyautogui.locateCenterOnScreen('em_parametro.png', confidence=0.8)
@@ -602,19 +614,19 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
         pyautogui.press('delete')
         pyautogui.write(str(classe_via_uo))
         pyautogui.scroll(-300)
-        sleep(2)
+        sleep(1)
 
         #fechar janela modificada e passar para próxima 
         seta_pista_rodagem2 = pyautogui.locateCenterOnScreen('seta_pista_rodagem2.png', confidence=0.9)
         pyautogui.click(seta_pista_rodagem2)
-        sleep(2)
+        sleep(1)
         pyautogui.scroll(-300)
-        sleep(2)
+        sleep(1)
     
     #abrir a janela necessária
     seta_pista1_closed = pyautogui.locateCenterOnScreen('seta_pista1_closed.png', confidence=0.9)
     pyautogui.click(seta_pista1_closed)
-    sleep(2)
+    sleep(1)
 
     #modificar em 
     em_parametro = pyautogui.locateCenterOnScreen('em_parametro.png', confidence=0.8)
@@ -631,18 +643,52 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
     pyautogui.write(str(classe_via_uo))
     sleep(0.2)
     pyautogui.scroll(-300)
-    sleep(2)
+    sleep(1)
 
     #fechar janela modificada e passar para próxima 
     seta_pista_rodagem1 = pyautogui.locateCenterOnScreen('seta_pista_rodagem1.png', confidence=0.9)
     pyautogui.click(seta_pista_rodagem1)
-    sleep(2)
-    pyautogui.scroll(-300)
-    sleep(2)
+    sleep(1)
+    pyautogui.scroll(-600)
+    sleep(1)
     
+    #abrir a janela necessária
+    seta_passeio2_closed = pyautogui.locateCenterOnScreen('seta_passeio2_closed.png', confidence=0.9)
+    pyautogui.click(seta_passeio2_closed)
+    sleep(1)
+    pyautogui.scroll(-600)
+    sleep(1)
+    #modificar em 
+    em_parametro = pyautogui.locateCenterOnScreen('em_parametro.png', confidence=0.8)
+    pyautogui.click(em_parametro)
+    pyautogui.hotkey('ctrl', 'a')
+    pyautogui.press('delete')
+    pyautogui.write(str(classe_passeio_em))
 
-    #repetir passos anteriores
-    #abrir todas as janelas novamente para verificar os checks
+    #modificar uo
+    uo_parametro = pyautogui.locateCenterOnScreen('uo_parametro.png', confidence=0.8)
+    pyautogui.click(uo_parametro)
+    pyautogui.hotkey('ctrl', 'a')
+    pyautogui.press('delete')
+    pyautogui.write(str(classe_passeio_uo))
+
+    #-----abrindo todas as guias-----
+    seta_pista1_closed = pyautogui.locateCenterOnScreen('seta_pista1_closed.png', confidence=0.9)
+    pyautogui.click(seta_pista1_closed)
+    sleep(1)
+    #abrir a janela necessária
+    seta_passeio1_closed = pyautogui.locateCenterOnScreen('seta_passeio1_closed.png', confidence=0.8)
+    pyautogui.click(seta_passeio1_closed)
+    sleep(1)
+
+    if(valida_central == 1):
+        #abrir a janela necessária
+        seta_pista2_closed = pyautogui.locateCenterOnScreen('seta_pista2_closed.png', confidence=0.9)
+        pyautogui.click(seta_pista2_closed)
+        sleep(2)
+
+    pyautogui.scroll(-1000)
+    #abrir todas as janelas novamente para verificar os checks (manter aberta)
     #lembrar de usar rolagem scroll
 
     #------------------------------------------#CHOOSE LUM-------------------------------------------#
@@ -762,7 +808,7 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
     sleep(1.5)
     exibir = pyautogui.locateCenterOnScreen('exibir_doc.png', confidence=0.6)
     pyautogui.click(exibir.x, exibir.y)
-    sleep(17)
+    sleep(20)
 
     #salvando pdf relatório
     guardarpdf = pyautogui.locateCenterOnScreen('guardar_como.png', confidence=0.6)
@@ -774,7 +820,7 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
     ok_pdf = pyautogui.locateCenterOnScreen('ok_pdf.png', confidence=0.6)
     pyautogui.click(ok_pdf.x, ok_pdf.y)
     sleep(1)
-    documentos = pyautogui.locateCenterOnScreen('documentos_w11.png', confidence=0.5)
+    documentos = pyautogui.locateCenterOnScreen('documentos_w11.png', confidence=0.9)
     pyautogui.click(documentos.x, documentos.y)
     sleep(0.8)
     teste = pyautogui.locateCenterOnScreen('teste_pasta.png', confidence=0.6)
