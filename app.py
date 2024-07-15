@@ -19,6 +19,15 @@ df = pd.read_excel('table_itajai_test.xlsx', sheet_name='RIAN - V4P4')
 # Verificar as colunas para encontrar os nomes corretos
 print(df.columns)
 
+# Adicionar colunas 'luminaria_escolhida' e 'angulo_escolhido' se não existirem
+if 'luminaria_escolhida' not in df.columns:
+    df['luminaria_escolhida'] = ""
+if 'angulo_escolhido' not in df.columns:
+    df['angulo_escolhido'] = ""
+
+# Garantir que a coluna 'luminaria_escolhida' é do tipo object
+df['luminaria_escolhida'] = df['luminaria_escolhida'].astype(object)
+
 # Extrair dados das colunas "larg_passeio_opost", "largura_via" e "larg_passeio_adj"
 larg_passeio_opost = df['larg_passeio_opost'].tolist()
 largura_via = df['largura_via'].tolist()
@@ -305,7 +314,7 @@ def scroll_to_position(target_y, steps=200):
 
 
 # Iterar sobre os valores extraídos e digitar no campo correspondente
-for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altura_lum_x, angulo_x, poste_pista_x, comprimento_braco_x, qtde_faixas_x, larg_canteiro_central_x, pendor_x, classe_via_x, classe_passeio_x in zip(larg_passeio_opost, largura_via, larg_passeio_adj, entre_postes, altura_lum, angulo, poste_pista, comprimento_braco, qtde_faixas, larg_canteiro_central, pendor, classe_via, classe_passeio):
+for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altura_lum_x, angulo_x, poste_pista_x, comprimento_braco_x, qtde_faixas_x, larg_canteiro_central_x, pendor_x, classe_via_x, classe_passeio_x) in enumerate(zip(larg_passeio_opost, largura_via, larg_passeio_adj, entre_postes, altura_lum, angulo, poste_pista, comprimento_braco, qtde_faixas, larg_canteiro_central, pendor, classe_via, classe_passeio)):
 
     if(classe_via_x == "v1" or classe_via_x == "V1"):
         classe_via_em = 30
@@ -767,8 +776,8 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
     pyautogui.click(nome_projet.x, nome_projet.y)
     pyautogui.hotkey('ctrl', 'a')
     pyautogui.press('delete')
-    luminaria_escolhida = str(check_lum)
-    modify_name = "Itajai " + cont__str + " " + luminaria_escolhida
+    luminaria_escolhida = str(check_lum[0])
+    modify_name = "Itajai " + cont__str + " - " + luminaria_escolhida
     pyautogui.write(modify_name.upper())  
     #pyautogui.write(str("Itajai " + cont__str + " " + luminaria_escolhida))
     sleep(2.3)
@@ -802,7 +811,7 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
     sleep(4)
 
     #salvando arquivo editável
-    ficheiro = pyautogui.locateCenterOnScreen('ficheiro.png', confidence=0.5)
+    ficheiro = pyautogui.locateCenterOnScreen('ficheiro.png', confidence=0.7)
     pyautogui.click(ficheiro.x, ficheiro.y)
     sleep(0.5)
     guardar_project = pyautogui.locateCenterOnScreen('guardar_project.png', confidence=0.8)
@@ -819,9 +828,15 @@ for larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x, altur
     sleep(0.5)
     pyautogui.hotkey('ctrl', 'a')
     pyautogui.press('delete')
-    project_name = "Itajai " + cont__str + " " + luminaria_escolhida
+    project_name = "Itajai " + cont__str + " - " + luminaria_escolhida
     pyautogui.write(project_name.upper() + ".evo")
    # pyautogui.write(str("Itajai " + cont__str + " " + luminaria_escolhida + ".evo")) #nome arquivo
     salvar_pasta = pyautogui.locateCenterOnScreen('salvar_pasta.png', confidence=0.6)
     pyautogui.click(salvar_pasta.x, salvar_pasta.y)
     sleep(4)
+    # Atualizar a planilha com a luminária escolhida e o ângulo
+    df.at[idx, 'luminaria_escolhida'] = luminaria_escolhida
+    df.at[idx, 'angulo_escolhido'] = angulo_x
+
+    # Salvar a planilha atualizada  
+    df.to_excel('table_itajai_test_atualizada.xlsx', sheet_name='RIAN - V4P4', index=False)
