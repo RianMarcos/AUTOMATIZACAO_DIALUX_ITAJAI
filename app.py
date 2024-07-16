@@ -706,7 +706,7 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
     check_lum = []
     lum = ["AGN7026D4", "AGN7030D4", "AGN7040D4", "AGN7050D4", "AGN7060D4", "AGN7070D4", "AGN7080D4", "AGN7090D4", "AGN7100D4", "AGN7110D4", "AGN7120D4", "AGN7130D4", "AGN7150D4", "AGN7160D4", "AGN7170D4", "AGN7180D4", "AGN7200D4", "AGN7220D4", "AGN7240D4"]
     tamanho_lista_luminarias = len(lum)
-    ruas = pyautogui.locateCenterOnScreen('ruas.png', confidence=0.6) #ir para ruas e voltar para luminarias para resetar tabs
+    ruas = pyautogui.locateCenterOnScreen('ruas.png', confidence=0.7) #ir para ruas e voltar para luminarias para resetar tabs
     pyautogui.click(ruas.x, ruas.y)
     sleep(0.4)
     luminaria = pyautogui.locateCenterOnScreen('luminaria.png', confidence=0.6)
@@ -745,6 +745,7 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
         top = 450
         width = 31
         height = 357
+        sleep(0.5)
         # Capturar tela da área de resultados
         screenshot = pyautogui.screenshot(region=(left, top, width, height)) #captura checks
         # Especificar o caminho completo para salvar a captura de tela
@@ -764,6 +765,7 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
         print("tamanho lista lums")
         print(tamanho_lista_luminarias)
         atende = 1
+        sleep(0.5)
         if(cont_choose == tamanho_lista_luminarias):
             print("nenhuma luminaria atende o cenario")
             check_lum = "NAO_ATENDE"
@@ -816,7 +818,7 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
     sleep(0.8)
     teste = pyautogui.locateCenterOnScreen('teste_pasta.png', confidence=0.6)
     pyautogui.doubleClick(teste.x, teste.y)
-    sleep(0.5)
+    sleep(1)
     salvar_pasta = pyautogui.locateCenterOnScreen('salvar_pasta.png', confidence=0.6)
     pyautogui.click(salvar_pasta.x, salvar_pasta.y)
     sleep(5.5)
@@ -836,7 +838,7 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
     sleep(0.5)
     nome_editavel = pyautogui.locateCenterOnScreen('nome_editavel.png', confidence=0.7)
     pyautogui.doubleClick(nome_editavel.x, nome_editavel.y)
-    sleep(0.5)
+    sleep(1)
     pyautogui.hotkey('ctrl', 'a')
     pyautogui.press('delete')
     project_name = "Itajai " + cont__str + " - " + luminaria_escolhida
