@@ -24,6 +24,9 @@ if 'luminaria_escolhida' not in df.columns:
     df['luminaria_escolhida'] = ""
 if 'angulo_escolhido' not in df.columns:
     df['angulo_escolhido'] = ""
+if 'cenario' not in df.columns:
+    df['cenario'] = ""
+
 
 # Garantir que a coluna 'luminaria_escolhida' é do tipo object
 df['luminaria_escolhida'] = df['luminaria_escolhida'].astype(object)
@@ -57,16 +60,16 @@ classe_passeio = df['classe_passeio'].str.lower().tolist()
 def classifica_vias_passeios():
     seta_passeio1 = pyautogui.locateCenterOnScreen('seta_passeio1.png', confidence=0.8)
     pyautogui.click(seta_passeio1)
-    sleep(2)
+    sleep(1)
 
     if(valida_central == 1):
         seta_pista_rodagem2 = pyautogui.locateCenterOnScreen('seta_pista_rodagem2.png', confidence=0.9)
         pyautogui.click(seta_pista_rodagem2.x, seta_pista_rodagem2.y)
 
-    sleep(2)
+    sleep(1)
     seta_pista_rodagem1 = pyautogui.locateCenterOnScreen('seta_pista_rodagem1.png', confidence=0.9)
     pyautogui.click(seta_pista_rodagem1.x, seta_pista_rodagem1.y)
-    sleep(2)
+    sleep(1)
     seta_passeio2 = pyautogui.locateCenterOnScreen('seta_passeio2.png', confidence=0.9)
     pyautogui.click(seta_passeio2.x, seta_passeio2.y)
 
@@ -189,7 +192,7 @@ def classifica_vias_passeios():
         #abrir a janela necessária
         seta_pista2_closed = pyautogui.locateCenterOnScreen('seta_pista2_closed.png', confidence=0.9)
         pyautogui.click(seta_pista2_closed)
-        sleep(2)
+        sleep(1)
 
     pyautogui.scroll(-1000)
     #abrir todas as janelas novamente para verificar os checks (manter aberta)
@@ -353,7 +356,7 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
     
     # Abrindo guia planejamento
     pyautogui.click(399, 82, duration=0.5)
-    sleep(1.5)
+    sleep(1)
     ruas = pyautogui.locateCenterOnScreen('ruas.png', confidence=0.6)
     pyautogui.click(ruas.x, ruas.y)
     sleep(1)
@@ -470,7 +473,7 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
         sleep(0.5)
         # Digitando qtde de faixas
         pyautogui.write(str(qtde_faixas_x))
-        sleep(1.5)
+        sleep(1)
         
         #PASSEIO2
         pyautogui.hotkey('shift', 'tab')
@@ -586,10 +589,10 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
     #clicar no bilateral para atualizar distruibuições e liberar canteiro central
     img_bilateral = pyautogui.locateCenterOnScreen('bilateral.png', confidence =0.7)
     pyautogui.click(img_bilateral.x, img_bilateral.y)
-    sleep(3)
+    sleep(2.5)
     img_uni = pyautogui.locateCenterOnScreen('unilateral_inferior.png', confidence =0.7)
     pyautogui.click(img_uni.x, img_uni.y)
-    sleep(3)
+    sleep(2.5)
 
     # Posicione o mouse sobre a scrollbar 
     #pyautogui.moveTo(492, 512)  # Ajuste as coordenadas conforme necessário
@@ -644,7 +647,7 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
         tab_interate(2)
     
 
-    sleep(3)
+    sleep(0.5)
     #Distancia entre postes
     pyautogui.hotkey('ctrl', 'a')
     pyautogui.press('delete')
@@ -760,9 +763,11 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
         print(cont_choose)
         print("tamanho lista lums")
         print(tamanho_lista_luminarias)
+        atende = 1
         if(cont_choose == tamanho_lista_luminarias):
             print("nenhuma luminaria atende o cenario")
-            check_lum = "[NAO_ATENDE]"
+            check_lum = "NAO_ATENDE"
+            atende = 0
             #adicionar aqui logica para salvar cenario sem luminarias
 
     #--------------------------------------------------------------------------------------------------#
@@ -776,8 +781,14 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
     pyautogui.click(nome_projet.x, nome_projet.y)
     pyautogui.hotkey('ctrl', 'a')
     pyautogui.press('delete')
-    luminaria_escolhida = str(check_lum[0])
+
+    if(atende == 1):
+        luminaria_escolhida = str(check_lum[0])
+    else:
+        luminaria_escolhida = "NAO ATENDE"
+
     modify_name = "Itajai " + cont__str + " - " + luminaria_escolhida
+    modify_name.upper() 
     pyautogui.write(modify_name.upper())  
     #pyautogui.write(str("Itajai " + cont__str + " " + luminaria_escolhida))
     sleep(2.3)
@@ -785,7 +796,7 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
     #Gerando relat - guia_documentacao
     guia_doc = pyautogui.locateCenterOnScreen('guia_documentacao.png', confidence=0.6)
     pyautogui.click(guia_doc.x, guia_doc.y)
-    sleep(1.5)
+    sleep(1.8)
     exibir = pyautogui.locateCenterOnScreen('exibir_doc.png', confidence=0.6)
     pyautogui.click(exibir.x, exibir.y)
     sleep(20)
@@ -799,7 +810,7 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
     sleep(0.8)
     ok_pdf = pyautogui.locateCenterOnScreen('ok_pdf.png', confidence=0.6)
     pyautogui.click(ok_pdf.x, ok_pdf.y)
-    sleep(1)
+    sleep(2)
     documentos = pyautogui.locateCenterOnScreen('documentos_w11.png', confidence=0.9)
     pyautogui.click(documentos.x, documentos.y)
     sleep(0.8)
@@ -808,7 +819,7 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
     sleep(0.5)
     salvar_pasta = pyautogui.locateCenterOnScreen('salvar_pasta.png', confidence=0.6)
     pyautogui.click(salvar_pasta.x, salvar_pasta.y)
-    sleep(4)
+    sleep(5.5)
 
     #salvando arquivo editável
     ficheiro = pyautogui.locateCenterOnScreen('ficheiro.png', confidence=0.7)
@@ -816,8 +827,8 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
     sleep(0.5)
     guardar_project = pyautogui.locateCenterOnScreen('guardar_project.png', confidence=0.8)
     pyautogui.click(guardar_project.x, guardar_project.y)
-    sleep(0.5)
-    documentos = pyautogui.locateCenterOnScreen('documentos_w11.png', confidence=0.6)
+    sleep(1.5)
+    documentos = pyautogui.locateCenterOnScreen('documentos_w11.png', confidence=0.7)
     pyautogui.click(documentos.x, documentos.y)
     sleep(0.3)
     teste = pyautogui.locateCenterOnScreen('teste_pasta.png', confidence=0.6)
@@ -838,5 +849,16 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
     df.at[idx, 'luminaria_escolhida'] = luminaria_escolhida
     df.at[idx, 'angulo_escolhido'] = angulo_x
 
+    # Garantir que a coluna 'cenario' é do tipo object
+    df['cenario'] = df['cenario'].astype(object)
+
+    df.at[idx, 'cenario'] = modify_name
+
+    # Identificar colunas a serem removidas
+    colunas_remover = [col for col in df.columns if 'Material' in col]
+
+    # Remover as colunas indesejadas
+    df_limpo = df.drop(columns=colunas_remover)
+
     # Salvar a planilha atualizada  
-    df.to_excel('table_itajai_test_atualizada.xlsx', sheet_name='RIAN - V4P4', index=False)
+    df_limpo.to_excel('table_itajai_test_atualizada.xlsx', sheet_name='RIAN - V4P4', index=False)
