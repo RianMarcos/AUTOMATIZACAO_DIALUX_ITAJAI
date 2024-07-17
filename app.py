@@ -57,6 +57,17 @@ classe_passeio = df['classe_passeio'].str.lower().tolist()
 #pyautogui.doubleClick(147, 423, duration=0.5)
 #sleep(30)  # TEMPO ATÉ ABRIR E CARREGAR O DIALUX
 
+
+def verifica_add_passeio():
+    #entra todo começo de loop para adicionar passeio se ainda nao tem 
+    #verifica se ja existe os dois passeios, se nao existir adiocina 
+    print()
+
+def exclui_passeio():
+    #entra nessa funcao todo fim de codigo para excluir a mesma
+    #verifica se é necessário ou não excluir o passeio 
+    print()
+
 def classifica_vias_passeios():
     seta_passeio1 = pyautogui.locateCenterOnScreen('seta_passeio1.png', confidence=0.8)
     pyautogui.click(seta_passeio1)
@@ -350,6 +361,17 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
         classe_passeio_em = 3
         classe_passeio_uo = 0.2
 
+    #Verificar se será necessário excluir ou adicionar um passeio
+    if(larg_passeio_oposto == 0):
+        check_passeio_oposto = 0
+    else: 
+        check_passeio_opost = 1
+
+    if(larg_passeio_adjacente == 0):
+        check_passeio_adjacente = 0
+    else: 
+        check_passeio_adjacente = 1
+    verifica_add_passeio(check_passeio_oposto, check_passeio_adjacente)
 
     cont_geral += 1  # var para fazer a contagem de cenários 
     cont__str = str(cont_geral)  # var para fazer conversão de int para string e passar como parametro no nome do cenário
@@ -701,6 +723,7 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
         #ADICIONAR AQUI DESLOCAMENTO LONGITUDINAL
 
     classifica_vias_passeios()                                          
+    exclui_passeio()
 
     #------------------------------------------#CHOOSE LUM-------------------------------------------#
     check_lum = []
