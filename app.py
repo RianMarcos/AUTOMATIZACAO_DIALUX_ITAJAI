@@ -60,8 +60,57 @@ classe_passeio = df['classe_passeio'].str.lower().tolist()
 
 def verifica_add_passeio():
     #entra todo começo de loop para adicionar passeio se ainda nao tem 
-    #verifica se ja existe os dois passeios, se nao existir adiocina 
-    print()
+    #verifica se ja existe os dois passeios, se nao existir adiciona 
+    try:
+        passeio1 = pyautogui.locateCenterOnScreen('passeio1.png', confidence=0.8)
+        check_passeio1 = 1 if passeio1 is not None else 0   # Verifica se a imagem 'central.png' foi encontrada
+    except pyautogui.ImageNotFoundException:
+        check_passeio1 = 0
+    if check_passeio1 == 1: 
+        print("Passeio1 Encontrado")
+    else:
+        add_passeio = pyautogui.locateCenterOnScreen('add_passeio.png', confidence=0.8)
+        pyautogui.click(add_passeio)
+        print("Passeio1 adicionado") 
+        sleep(1)
+
+    try:
+        passeio2 = pyautogui.locateCenterOnScreen('passeio2.png', confidence=0.8)
+        check_passeio2 = 1 if passeio2 is not None else 0   # Verifica se a imagem 'central.png' foi encontrada
+    except pyautogui.ImageNotFoundException:
+        check_passeio2 = 0
+    if check_passeio2 == 1: 
+        print("Passeio2 Encontrado")
+    else:
+        add_passeio = pyautogui.locateCenterOnScreen('add_passeio.png', confidence=0.8)
+        pyautogui.click(add_passeio)
+        print("Passeio2 adicionado")  
+        sleep(2) 
+
+        #clicar no primeiro passeio
+        first_passeio = pyautogui.locateCenterOnScreen('first_passeio.png', confidence=0.8)
+        pyautogui.click(first_passeio)
+        sleep(1)
+
+        #moficar nome
+        tab_interate(5)
+        sleep(0.5)
+        name_passeio = "PASSEIO"
+        pyautogui.write(str(name_passeio))
+        tab_interate(1)
+        pyautogui.press('left', presses=9)
+        sleep(8)
+
+        #descer para último
+        seta_baixo = pyautogui.locateCenterOnScreen('seta_baixo.png', confidence=0.9)
+        pyautogui.click(seta_baixo.x, seta_baixo.y)
+        pyautogui.click(seta_baixo.x, seta_baixo.y)
+        pyautogui.click(seta_baixo.x, seta_baixo.y)
+        pyautogui.click(seta_baixo.x, seta_baixo.y)
+        pyautogui.click(seta_baixo.x, seta_baixo.y)
+        pyautogui.click(seta_baixo.x, seta_baixo.y)
+        sleep(5)
+
 
 def exclui_passeio():
     #entra nessa funcao todo fim de codigo para excluir a mesma
@@ -365,13 +414,13 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
     if(larg_passeio_oposto == 0):
         check_passeio_oposto = 0
     else: 
-        check_passeio_opost = 1
+        check_passeio_oposto = 1
 
     if(larg_passeio_adjacente == 0):
         check_passeio_adjacente = 0
     else: 
         check_passeio_adjacente = 1
-    verifica_add_passeio(check_passeio_oposto, check_passeio_adjacente)
+
 
     cont_geral += 1  # var para fazer a contagem de cenários 
     cont__str = str(cont_geral)  # var para fazer conversão de int para string e passar como parametro no nome do cenário
@@ -382,6 +431,9 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
     ruas = pyautogui.locateCenterOnScreen('ruas.png', confidence=0.6)
     pyautogui.click(ruas.x, ruas.y)
     sleep(1)
+
+    verifica_add_passeio()
+
     auxiliar_1 = 0
     if distribuicao[cont_geral-1] == 'central' or distribuicao[cont_geral-1]== 'canteiro central' or distribuicao[cont_geral-1]==  'canteiro_central' or distribuicao[cont_geral-1]== 'central':
         #validar se ja existe canteiro central, se nao existir adicionar 
