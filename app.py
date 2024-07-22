@@ -57,13 +57,60 @@ classe_passeio = df['classe_passeio'].str.lower().tolist()
 #pyautogui.doubleClick(147, 423, duration=0.5)
 #sleep(30)  # TEMPO ATÉ ABRIR E CARREGAR O DIALUX
 
+def exclui_passeio(check_passeio_adjacente, check_passeio_oposto):
+
+    #abrir guia das ruas
+    ruas = pyautogui.locateCenterOnScreen('ruas.png', confidence=0.8)
+    pyautogui.click(ruas)   
+    sleep(1.5)
+
+    print("Excluindo passeios necessários")
+    if(check_passeio_oposto == 1): #será necessário excluir primeiro passeio
+        try:
+            passeio1 = pyautogui.locateCenterOnScreen('passeio1.png', confidence=0.8)
+            check_passeio1 = 1 if passeio1 is not None else 0  
+        except pyautogui.ImageNotFoundException:
+            check_passeio1 = 0
+        if check_passeio1 == 1: 
+            print("Passeio1 Encontrado")
+            passeio1 = pyautogui.locateCenterOnScreen('passeio1.png', confidence=0.8)
+            pyautogui.click(passeio1)
+            sleep(0.9)
+            remover = pyautogui.locateCenterOnScreen('remover2.png', confidence=0.9)
+            pyautogui.click(remover) 
+            sleep(0.6)
+        else:
+            print("Passeio1 já foi excluido") 
+            sleep(0.5)
+    else:
+        print("Manter primeiro passeio")
+
+    if(check_passeio_adjacente == 1): #será necessário excluir segundo passeio
+        try:
+            passeio2 = pyautogui.locateCenterOnScreen('passeio2.png', confidence=0.8)
+            check_passeio2 = 1 if passeio2 is not None else 0  
+        except pyautogui.ImageNotFoundException:
+            check_passeio2 = 0
+        if check_passeio2 == 1: 
+            print("Passeio1 Encontrado")
+            passeio2 = pyautogui.locateCenterOnScreen('passeio2.png', confidence=0.8)
+            pyautogui.click(passeio2)
+            sleep(0.9)
+            remover = pyautogui.locateCenterOnScreen('remover2.png', confidence=0.9)
+            pyautogui.click(remover) 
+            sleep(0.6)
+        else:
+            print("Passeio2 já foi excluido") 
+            sleep(0.5)
+    else:
+        print("Manter segundo passeio")
 
 def verifica_add_passeio():
     #entra todo começo de loop para adicionar passeio se ainda nao tem 
     #verifica se ja existe os dois passeios, se nao existir adiciona 
     try:
         passeio1 = pyautogui.locateCenterOnScreen('passeio1.png', confidence=0.8)
-        check_passeio1 = 1 if passeio1 is not None else 0   # Verifica se a imagem 'central.png' foi encontrada
+        check_passeio1 = 1 if passeio1 is not None else 0   
     except pyautogui.ImageNotFoundException:
         check_passeio1 = 0
     if check_passeio1 == 1: 
@@ -111,12 +158,17 @@ def verifica_add_passeio():
         pyautogui.click(seta_baixo.x, seta_baixo.y)
         sleep(5)
 
-
-def exclui_passeio():
+'''
+def exclui_passeio(check_passeio_oposto,check_passeio_adjacente):
+    if check_passeio_oposto == 0:
+        #excluir passeio oposto
+        print("Excluindo passeio oposto")
+    if check_passeio_adjacente == 0:
+        print("Excluir passeio adjacente")
     #entra nessa funcao todo fim de codigo para excluir a mesma
     #verifica se é necessário ou não excluir o passeio 
     print()
-
+'''
 def classifica_vias_passeios():
     seta_passeio1 = pyautogui.locateCenterOnScreen('seta_passeio1.png', confidence=0.8)
     pyautogui.click(seta_passeio1)
@@ -307,14 +359,44 @@ def check_all(screenshot_path, validacao_central):
     print(f"Number of checks found: {num_checks}")
 
     # Check if the number of contours (checks)
-    if(validacao_central == 1):
-        if num_checks >= 8:
-            return True
-        return False
-    else:
-        if num_checks >= 6:
-            return True
-        return False
+    if(check_passeio_oposto == 1 and check_passeio_adjacente ==1):
+        if(validacao_central == 1):
+            if num_checks >= 8:
+                return True
+            return False
+        else:
+            if num_checks >= 6:
+                return True
+            return False
+    elif(check_passeio_oposto == 0 and check_passeio_adjacente == 1):   
+        if(validacao_central == 1):
+            if num_checks >= 6:
+                return True
+            return False
+        else:
+            if num_checks >= 4:
+                return True
+            return False
+        
+    elif(check_passeio_oposto == 1 and check_passeio_adjacente == 0):   
+        if(validacao_central == 1):
+            if num_checks >= 6:
+                return True
+            return False
+        else:
+            if num_checks >= 4:
+                return True
+            return False
+        
+    elif(check_passeio_oposto == 0 and check_passeio_adjacente == 0):   
+        if(validacao_central == 1):
+            if num_checks >= 4:
+                return True
+            return False
+        else:
+            if num_checks >= 2:
+                return True
+            return False  
 
 # Função para verificar se os valores obtidos são suficientes
 def check_results_passeio1_em():
@@ -774,8 +856,11 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
         pyautogui.write(str(pendor_x))
         #ADICIONAR AQUI DESLOCAMENTO LONGITUDINAL
 
-    classifica_vias_passeios()                                          
-    exclui_passeio()
+    classifica_vias_passeios()
+                                              
+    if(check_passeio_adjacente == 0 or check_passeio_oposto == 0):
+        print("entrou no IF que chama a funcao de exclusao")
+        exclui_passeio(check_passeio_adjacente, check_passeio_oposto)
 
     #------------------------------------------#CHOOSE LUM-------------------------------------------#
     check_lum = []
