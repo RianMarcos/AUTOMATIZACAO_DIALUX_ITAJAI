@@ -65,7 +65,7 @@ def exclui_passeio(check_passeio_adjacente, check_passeio_oposto):
     sleep(1.5)
 
     print("Excluindo passeios necessários")
-    if(check_passeio_oposto == 1): #será necessário excluir primeiro passeio
+    if(check_passeio_oposto == 0): #será necessário excluir primeiro passeio
         try:
             passeio1 = pyautogui.locateCenterOnScreen('passeio1.png', confidence=0.8)
             check_passeio1 = 1 if passeio1 is not None else 0  
@@ -85,14 +85,16 @@ def exclui_passeio(check_passeio_adjacente, check_passeio_oposto):
     else:
         print("Manter primeiro passeio")
 
-    if(check_passeio_adjacente == 1): #será necessário excluir segundo passeio
+    if(check_passeio_adjacente == 0): #será necessário excluir segundo passeio
         try:
+            sleep(0.5)
             passeio2 = pyautogui.locateCenterOnScreen('passeio2.png', confidence=0.8)
             check_passeio2 = 1 if passeio2 is not None else 0  
         except pyautogui.ImageNotFoundException:
             check_passeio2 = 0
         if check_passeio2 == 1: 
             print("Passeio1 Encontrado")
+            sleep(0.5)
             passeio2 = pyautogui.locateCenterOnScreen('passeio2.png', confidence=0.8)
             pyautogui.click(passeio2)
             sleep(0.9)
@@ -109,7 +111,7 @@ def verifica_add_passeio():
     #entra todo começo de loop para adicionar passeio se ainda nao tem 
     #verifica se ja existe os dois passeios, se nao existir adiciona 
     try:
-        passeio1 = pyautogui.locateCenterOnScreen('passeio1.png', confidence=0.8)
+        passeio1 = pyautogui.locateCenterOnScreen('first_passeio.png', confidence=0.9)
         check_passeio1 = 1 if passeio1 is not None else 0   
     except pyautogui.ImageNotFoundException:
         check_passeio1 = 0
@@ -121,8 +123,18 @@ def verifica_add_passeio():
         print("Passeio1 adicionado") 
         sleep(1)
 
+        #clicar no primeiro passeio
+        first_passeio = pyautogui.locateCenterOnScreen('first_passeio.png', confidence=0.8)
+        pyautogui.click(first_passeio)
+        sleep(1)
+        tab_interate(6)
+        pyautogui.press('left', presses=9)
+        sleep(8)
+
+
+
     try:
-        passeio2 = pyautogui.locateCenterOnScreen('passeio2.png', confidence=0.8)
+        passeio2 = pyautogui.locateCenterOnScreen('passeio2.png', confidence=0.9)
         check_passeio2 = 1 if passeio2 is not None else 0   # Verifica se a imagem 'central.png' foi encontrada
     except pyautogui.ImageNotFoundException:
         check_passeio2 = 0
@@ -560,6 +572,7 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
 
         #restante dos passos para inserir valores nos campos correspondentes 
         #PASSEIO1
+        sleep(1.5)
         passeio1 = pyautogui.locateCenterOnScreen('passeio1.png', confidence=0.7)
         pyautogui.doubleClick(passeio1.x, passeio1.y)
         sleep(1.5)
@@ -686,6 +699,7 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
     
         # Selecionando o passeio1
         #tab_interate(8)
+        sleep(1.5)
         passeio1 = pyautogui.locateCenterOnScreen('passeio1.png', confidence=0.7)
         pyautogui.doubleClick(passeio1.x, passeio1.y)
         sleep(1)
@@ -961,7 +975,7 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
     sleep(1.8)
     exibir = pyautogui.locateCenterOnScreen('exibir_doc.png', confidence=0.6)
     pyautogui.click(exibir.x, exibir.y)
-    sleep(20)
+    sleep(17)
 
     #salvando pdf relatório
     guardarpdf = pyautogui.locateCenterOnScreen('guardar_como.png', confidence=0.6)
