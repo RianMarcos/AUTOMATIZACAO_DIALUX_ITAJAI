@@ -84,7 +84,7 @@ def exclui_passeio(check_passeio_adjacente, check_passeio_oposto):
             sleep(0.5)
     else:
         print("Manter primeiro passeio")
-
+    sleep(1)
     if(check_passeio_adjacente == 0): #será necessário excluir segundo passeio
         try:
             sleep(0.5)
@@ -93,7 +93,7 @@ def exclui_passeio(check_passeio_adjacente, check_passeio_oposto):
         except pyautogui.ImageNotFoundException:
             check_passeio2 = 0
         if check_passeio2 == 1: 
-            print("Passeio1 Encontrado")
+            print("Passeio2 Encontrado")
             sleep(0.5)
             passeio2 = pyautogui.locateCenterOnScreen('passeio2.png', confidence=0.8)
             pyautogui.click(passeio2)
@@ -787,7 +787,7 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
         teste_central(x_img, y_img, tabs)
         sleep(0.5)
   
-    elif distribuicao[cont_geral-1] == 'bilateral':
+    elif distribuicao[cont_geral-1] == 'bilateral' or distribuicao[cont_geral-1] == 'bilateral frontal':
         img_bilateral = pyautogui.locateCenterOnScreen('bilateral.png', confidence =0.7)
         pyautogui.click(img_bilateral.x, img_bilateral.y)
         print("ENTROU NO bilateral")
