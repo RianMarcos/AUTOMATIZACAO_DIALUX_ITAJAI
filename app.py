@@ -127,7 +127,18 @@ def verifica_add_passeio():
         first_passeio = pyautogui.locateCenterOnScreen('first_passeio.png', confidence=0.8)
         pyautogui.click(first_passeio)
         sleep(1)
-        tab_interate(6)
+        tab_interate(1)
+        pyautogui.hotkey('ctrl', 'a')
+        pyautogui.press('delete')
+        name_passeio_1 = "Passeio 1"
+        pyautogui.write(str(name_passeio_1))
+        tab_interate(4)
+        pyautogui.hotkey('ctrl', 'a')
+        pyautogui.press('delete')
+        name_passeio_1 = "Passeio 1"
+        pyautogui.write(str(name_passeio_1))
+        sleep(0.3)
+        tab_interate(1)
         pyautogui.press('left', presses=9)
         sleep(8)
 
@@ -152,7 +163,12 @@ def verifica_add_passeio():
         sleep(1)
 
         #moficar nome
-        tab_interate(5)
+        tab_interate(1)
+        pyautogui.hotkey('ctrl', 'a')
+        pyautogui.press('delete')
+        nome_passeio_2 = "Passeio 2"
+        pyautogui.write(str(nome_passeio_2))
+        tab_interate(4)
         sleep(0.5)
         name_passeio = "PASSEIO"
         pyautogui.write(str(name_passeio))
@@ -605,6 +621,7 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
         sleep(0.5)
         pyautogui.hotkey('ctrl', 'a')
         pyautogui.press('delete')
+        sleep(0.3)
         # Digitando o novo valor para
         # Digitando qtde de faixas
         pyautogui.write(str(qtde_faixas_x))
