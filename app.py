@@ -78,7 +78,7 @@ def exclui_passeio(check_passeio_adjacente, check_passeio_oposto):
             sleep(0.9)
             remover = pyautogui.locateCenterOnScreen('remover2.png', confidence=0.9)
             pyautogui.click(remover) 
-            sleep(0.6)
+            sleep(0.7)
         else:
             print("Passeio1 já foi excluido") 
             sleep(0.5)
@@ -100,7 +100,7 @@ def exclui_passeio(check_passeio_adjacente, check_passeio_oposto):
             sleep(0.9)
             remover = pyautogui.locateCenterOnScreen('remover2.png', confidence=0.9)
             pyautogui.click(remover) 
-            sleep(0.6)
+            sleep(0.8)
         else:
             print("Passeio2 já foi excluido") 
             sleep(0.5)
