@@ -55,6 +55,19 @@ classe_passeio = df['classe_passeio'].str.lower().tolist()
 #pyautogui.doubleClick(147, 423, duration=0.5)
 #sleep(30)  # TEMPO ATÉ ABRIR E CARREGAR O DIALUX
 
+def save_pdf_report():
+    click_image('guia_documentacao.png', 0.6)
+    click_image('exibir_doc.png', 0.6)
+    sleep(17)
+    click_image('guardar_como.png', 0.6)
+    click_image('pdf.png', 0.6)
+    click_image('ok_pdf.png', 0.6)
+    sleep(2)
+    click_image('documentos_w11.png', 0.9)
+    click_image('teste_pasta.png', 0.6, double_click=True)
+    click_image('salvar_pasta.png', 0.6)
+    sleep(5.5)
+
 def click_image(image_path, confidence=0.7, double_click=False):
     location = pyautogui.locateCenterOnScreen(image_path, confidence=confidence)
     if location:
@@ -875,7 +888,7 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
 
     #------------------------------------------#CHOOSE LUM-------------------------------------------#
     check_lum = []
-    lum = ["AGN7026D4", "AGN7030D4", "AGN7040D4", "AGN7050D4", "AGN7060D4", "AGN7070D4", "AGN7080D4", "AGN7090D4", "AGN7100D4", "AGN7110D4", "AGN7120D4", "AGN7130D4", "AGN7150D4", "AGN7160D4", "AGN7170D4", "AGN7180D4", "AGN7200D4", "AGN7220D4", "AGN7240D4"]
+    lum = ["AGN7026D4", "AGN7030D4", "AGN7040D4", "AGN7050D4", "AGN7055D4", "AGN7060D4", "AGN7070D4", "AGN7080D4", "AGN7090D4", "AGN7100D4", "AGN7110D4", "AGN7120D4", "AGN7130D4", "AGN7150D4", "AGN7160D4", "AGN7170D4", "AGN7180D4", "AGN7200D4", "AGN7220D4", "AGN7240D4"]
     tamanho_lista_luminarias = len(lum)
     ruas = pyautogui.locateCenterOnScreen('ruas.png', confidence=0.7) #ir para ruas e voltar para luminarias para resetar tabs
     pyautogui.click(ruas.x, ruas.y)
@@ -888,7 +901,7 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
     sleep(0.4)
 
     cont= 0
-    agnes = 20 
+    agnes = 21 
     continua = False
 
     left = 1075
@@ -971,24 +984,7 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
     sleep(17)
 
     #salvando pdf relatório
-    guardarpdf = pyautogui.locateCenterOnScreen('guardar_como.png', confidence=0.6)
-    pyautogui.click(guardarpdf.x, guardarpdf.y)
-    sleep(0.5)
-    pdf_save = pyautogui.locateCenterOnScreen('pdf.png', confidence=0.6)
-    pyautogui.click(pdf_save.x, pdf_save.y)
-    sleep(0.8)
-    ok_pdf = pyautogui.locateCenterOnScreen('ok_pdf.png', confidence=0.6)
-    pyautogui.click(ok_pdf.x, ok_pdf.y)
-    sleep(2)
-    documentos = pyautogui.locateCenterOnScreen('documentos_w11.png', confidence=0.9)
-    pyautogui.click(documentos.x, documentos.y)
-    sleep(0.8)
-    teste = pyautogui.locateCenterOnScreen('teste_pasta.png', confidence=0.6)
-    pyautogui.doubleClick(teste.x, teste.y)
-    sleep(1)
-    salvar_pasta = pyautogui.locateCenterOnScreen('salvar_pasta.png', confidence=0.6)
-    pyautogui.click(salvar_pasta.x, salvar_pasta.y)
-    sleep(5.5)
+    save_pdf_report()
 
     #salvando arquivo editável
     ficheiro = pyautogui.locateCenterOnScreen('ficheiro.png', confidence=0.7)
@@ -1014,6 +1010,7 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
     salvar_pasta = pyautogui.locateCenterOnScreen('salvar_pasta.png', confidence=0.6)
     pyautogui.click(salvar_pasta.x, salvar_pasta.y)
     sleep(4)
+
     # Atualizar a planilha com a luminária escolhida e o ângulo
     df.at[idx, 'luminaria_escolhida'] = luminaria_escolhida
     df.at[idx, 'angulo_escolhido'] = angulo_x
