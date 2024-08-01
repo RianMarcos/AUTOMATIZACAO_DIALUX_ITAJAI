@@ -7,8 +7,6 @@ import numpy as np
 import os
 
 cont_geral = 0
-empasseio = 3.0
-uopasseio = 0.20
 check_distri = 0
 
 caminho = r"C:\Program Files\Tesseract-OCR"
@@ -57,8 +55,34 @@ classe_passeio = df['classe_passeio'].str.lower().tolist()
 #pyautogui.doubleClick(147, 423, duration=0.5)
 #sleep(30)  # TEMPO ATÉ ABRIR E CARREGAR O DIALUX
 
-def exclui_passeio(check_passeio_adjacente, check_passeio_oposto):
+def click_image(image_path, confidence=0.7, double_click=False):
+    location = pyautogui.locateCenterOnScreen(image_path, confidence=confidence)
+    if location:
+        if double_click:
+            pyautogui.doubleClick(location.x, location.y)
+        else:
+            pyautogui.click(location.x, location.y)
+        sleep(0.5)
+    else:
+        print(f"Imagem {image_path} não encontrada.")
 
+
+def to_upper_safe(texto):
+    if not isinstance(texto, str):
+        raise TypeError("A variável fornecida não é uma string")
+    
+    # Remover espaços em branco e caracteres invisíveis
+    texto = texto.strip()
+    
+    try:
+        texto_maiusculo = texto.upper()
+        return texto_maiusculo
+    except Exception as e:
+        print(f"Erro ao converter para maiúsculas: {e}")
+        return None
+
+def exclui_passeio(check_passeio_adjacente, check_passeio_oposto):
+    sleep(1)
     #abrir guia das ruas
     ruas = pyautogui.locateCenterOnScreen('ruas.png', confidence=0.8)
     pyautogui.click(ruas)   
@@ -130,12 +154,12 @@ def verifica_add_passeio():
         tab_interate(1)
         pyautogui.hotkey('ctrl', 'a')
         pyautogui.press('delete')
-        name_passeio_1 = "Passeio 1"
+        name_passeio_1 = "Passeio 1 (C3)"
         pyautogui.write(str(name_passeio_1))
         tab_interate(4)
         pyautogui.hotkey('ctrl', 'a')
         pyautogui.press('delete')
-        name_passeio_1 = "Passeio 1"
+        name_passeio_1 = "Passeio 1 (C3)"
         pyautogui.write(str(name_passeio_1))
         sleep(0.3)
         tab_interate(1)
@@ -186,17 +210,7 @@ def verifica_add_passeio():
         pyautogui.click(seta_baixo.x, seta_baixo.y)
         sleep(5)
 
-'''
-def exclui_passeio(check_passeio_oposto,check_passeio_adjacente):
-    if check_passeio_oposto == 0:
-        #excluir passeio oposto
-        print("Excluindo passeio oposto")
-    if check_passeio_adjacente == 0:
-        print("Excluir passeio adjacente")
-    #entra nessa funcao todo fim de codigo para excluir a mesma
-    #verifica se é necessário ou não excluir o passeio 
-    print()
-'''
+
 def classifica_vias_passeios():
     seta_passeio1 = pyautogui.locateCenterOnScreen('seta_passeio1.png', confidence=0.8)
     pyautogui.click(seta_passeio1)
@@ -426,41 +440,6 @@ def check_all(screenshot_path, validacao_central):
                 return True
             return False  
 
-# Função para verificar se os valores obtidos são suficientes
-def check_results_passeio1_em():
-    left = 990
-    top = 552
-    width = 51
-    height = 22
-    screenshot = pyautogui.screenshot(region=(left, top, width, height))
-    screenshot_path = f"C:/Users/AdminDell/Desktop/SCREENSHOTS_RESULTS/resultsEm_{cont_geral}.png"
-    screenshot.save(screenshot_path)
-    results_text = pytesseract.image_to_string(screenshot_path, config='--psm 7').strip()
-    print(f"Resultado antes da conversão para float: {results_text}")
-    try:
-        float_result = float(results_text)
-        print(f"Resultado depois da conversão para float {float_result}")
-    except ValueError:
-        print(f"Erro ao converter Em result: '{results_text}'")
-        float_result = float('inf')  # Usa um valor muito alto para evitar que este resultado seja selecionado
-    return float_result
-
-def check_results_passeio1_uo():
-    left = 999
-    top = 582
-    width = 39
-    height = 18
-    screenshot = pyautogui.screenshot(region=(left, top, width, height))
-    screenshot_path = f"C:/Users/AdminDell/Desktop/SCREENSHOTS_RESULTS/resultsUo_{cont_geral}.png"
-    screenshot.save(screenshot_path)
-    results_text = pytesseract.image_to_string(screenshot_path, config='--psm 7').strip()
-    
-    try:
-        float_result = float(results_text)
-    except ValueError:
-        print(f"Erro ao converter Uo result: '{results_text}'")
-        float_result = float('inf')  # Usa um valor muito alto para evitar que este resultado seja selecionado
-    return float_result
 
 def tab_interate(cont):
     i = 0
@@ -531,6 +510,7 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
     else: 
         check_passeio_adjacente = 1
 
+    print("Distribuição: "+ distribuicao[idx])
 
     cont_geral += 1  # var para fazer a contagem de cenários 
     cont__str = str(cont_geral)  # var para fazer conversão de int para string e passar como parametro no nome do cenário
@@ -906,22 +886,15 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
     primeira_luminaria = pyautogui.locateCenterOnScreen('primeira_luminaria.png', confidence=0.6)
     pyautogui.click(primeira_luminaria.x, primeira_luminaria.y)
     sleep(0.4)
-    #tab_interate(9)
-    #pyautogui.press('Down') #ir para proxima luminária
-    # Verificar resultados
-    #if check_results_passeio1_em() == True and check_results_passeio1_uo() == True:
-     #   print(f"Luminária selecionada no cenário {cont__str} atende aos requisitos.")
-    #else:
-     #   print(f"Luminária selecionada no cenário {cont__str} não atende aos requisitos.")
 
     cont= 0
     agnes = 20 
     continua = False
 
-    left = 1041
-    top = 550
-    width = 25
-    height = 255
+    left = 1075
+    top = 445
+    width = 29
+    height = 362
     # Capturar tela da área de resultados
     screenshot = pyautogui.screenshot(region=(left, top, width, height)) #captura checks
     # Especificar o caminho completo para salvar a captura de tela
@@ -981,8 +954,11 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
         luminaria_escolhida = "NAO ATENDE"
 
     modify_name = "Itajai " + cont__str + " - " + luminaria_escolhida
-    modify_name.upper() 
-    pyautogui.write(modify_name.upper())  
+    #modify_name.upper() 
+     
+    to_upper_safe(modify_name)
+    pyautogui.write(modify_name.upper()) 
+
     #pyautogui.write(str("Itajai " + cont__str + " " + luminaria_escolhida))
     sleep(2.3)
 
