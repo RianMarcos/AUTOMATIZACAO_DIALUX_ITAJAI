@@ -112,7 +112,7 @@ def exclui_passeio(check_passeio_adjacente, check_passeio_oposto):
             print("Passeio1 Encontrado")
             passeio1 = pyautogui.locateCenterOnScreen('passeio1.png', confidence=0.8)
             pyautogui.click(passeio1)
-            sleep(0.9)
+            sleep(1.9)
             remover = pyautogui.locateCenterOnScreen('remover2.png', confidence=0.9)
             pyautogui.click(remover) 
             sleep(0.7)
@@ -134,7 +134,7 @@ def exclui_passeio(check_passeio_adjacente, check_passeio_oposto):
             sleep(0.5)
             passeio2 = pyautogui.locateCenterOnScreen('passeio2.png', confidence=0.8)
             pyautogui.click(passeio2)
-            sleep(0.9)
+            sleep(1.9)
             remover = pyautogui.locateCenterOnScreen('remover2.png', confidence=0.9)
             pyautogui.click(remover) 
             sleep(0.8)
@@ -159,7 +159,8 @@ def verifica_add_passeio():
         pyautogui.click(add_passeio)
         print("Passeio1 adicionado") 
         sleep(1)
-
+        pyautogui.moveTo(1136, 1136)
+        sleep(0.3)
         #clicar no primeiro passeio
         first_passeio = pyautogui.locateCenterOnScreen('first_passeio.png', confidence=0.8)
         pyautogui.click(first_passeio)
@@ -193,7 +194,8 @@ def verifica_add_passeio():
         pyautogui.click(add_passeio)
         print("Passeio2 adicionado")  
         sleep(2) 
-
+        pyautogui.moveTo(1136, 1136)
+        sleep(0.3)
         #clicar no primeiro passeio
         first_passeio = pyautogui.locateCenterOnScreen('first_passeio.png', confidence=0.8)
         pyautogui.click(first_passeio)
@@ -614,7 +616,7 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
         sleep(0.5)
         pyautogui.hotkey('ctrl', 'a')
         pyautogui.press('delete')
-        sleep(0.3)
+        sleep(0.7)
         # Digitando o novo valor para
         # Digitando qtde de faixas
         pyautogui.write(str(qtde_faixas_x))
@@ -632,6 +634,8 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
         pyautogui.hotkey('shift', 'tab')
         pyautogui.hotkey('shift', 'tab')
         pyautogui.hotkey('shift', 'tab')
+        pyautogui.hotkey('shift', 'tab')
+        pyautogui.press('tab')
         pyautogui.press('Down')
         sleep(0.5)
         # Clicando no campo largura via (ajustar coordenadas conforme necessário)
@@ -662,6 +666,8 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
         pyautogui.hotkey('shift', 'tab')
         pyautogui.hotkey('shift', 'tab')
         pyautogui.hotkey('shift', 'tab')
+        pyautogui.hotkey('shift', 'tab')
+        pyautogui.press('tab')
         pyautogui.press('Down')
         passeio2 = pyautogui.locateCenterOnScreen('passeio2.png', confidence=0.7)
         pyautogui.doubleClick(passeio2.x, passeio2.y)
@@ -1006,6 +1012,8 @@ for idx, (larg_passeio_oposto, larg_via, larg_passeio_adjacente, entre_postes_x,
     pyautogui.press('delete')
     project_name = "Itajai " + cont__str + " - " + luminaria_escolhida
     pyautogui.write(project_name.upper() + ".evo")
+    pyautogui.moveTo(1136, 1136)
+    sleep(0.3)
    # pyautogui.write(str("Itajai " + cont__str + " " + luminaria_escolhida + ".evo")) #nome arquivo
     salvar_pasta = pyautogui.locateCenterOnScreen('salvar_pasta.png', confidence=0.6)
     pyautogui.click(salvar_pasta.x, salvar_pasta.y)
